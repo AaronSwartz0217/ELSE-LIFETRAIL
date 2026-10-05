@@ -91,7 +91,7 @@
       <div class="cards" style="margin-top:14px" id="stageStats"></div>
 
       <div class="card wide" data-glass>
-        <div class="k">动态数量 · 逐月（2016–2026，左右滚动查看）</div>
+        <div class="k" id="monthChartTitle">动态数量 · 逐月（2016–2026，左右滚动查看）</div>
         <div class="legend">
           <span><i class="lg-log"></i>日志</span>
           <span><i class="lg-act"></i>动作</span>
@@ -121,7 +121,7 @@
       </div>
 
       <div class="card wide" data-glass>
-        <div class="k">发展阶段模型 · 11 个可核验阶段</div>
+        <div class="k">发展阶段模型 · <span id="stageCount">11</span> 个可核验阶段</div>
         <p class="sub" style="margin-top:6px">按 <span data-lognum>154</span> 篇原始日志与补回图片重新划分；每段列出关键证据、真正变化、尚未完成与解释边界。</p>
         <div id="stageTheory" style="margin-top:12px"></div>
       </div>
@@ -377,6 +377,6 @@
 </div>
 
 <script src="glass.js?v=9"></script>
-<script src="app.js?v=60"></script>
+<script src="app.js?v=61"></script>
 </body>
 </html>

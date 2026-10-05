@@ -309,6 +309,12 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-05', title: '阶段页 · 逐月柱状图的刻度、标题、阶段数一起接上真实数据',
+      items: ['柱子的高度本来就是活的（buildMonthly 现算），但它的纵轴刻度、卡片标题、第三张卡的阶段数还写死在代码里',
+              '纵轴顶端刻度原来取原值再按 step 递增，最高柱 27 篇时刻度只到 21，柱子会冲出网格线；改成把 max 向上取整到 step 的倍数（27 → 刻度到 28）',
+              '卡片标题「动态数量 · 逐月（2016–2026，左右滚动查看）」的年份区间改成按横轴首尾月填充（#monthChartTitle），横轴越走越长时标题跟着走',
+              '「发展阶段模型 · N 个可核验阶段」的 N 改成按 /api/stages 实际条数填充（#stageCount），不再是写死的 11',
+              '改动：public/app.js（renderBarChart 的 rawMax/step/max、#monthChartTitle、loadStages 填 #stageCount）、public/index.html（两处加 id、版本号）'] },
     { date: '2026-10-05', title: '时间轴 · 逐月篇数改成活数据，修掉年份尺 52 / 实际 55 的偏差',
       items: ['年度刻度尺的逐年篇数原先写死在 app.js 的 YEARS.months 里（清点自 153 篇时代），日志涨到 156 后没跟着动：2026 年显示 52，实际 55，全尺合计 153',
               '后端 /api/stats 新增 byMonth（"YYYY-MM" → 条数），由服务端直接从索引算；前端 applyLogMonths() 用它覆写 YEARS.months，并重建逐月横轴与 LOG_BY_MONTH',
@@ -791,10 +797,20 @@ const MONTH_SLOT = 32, AXIS_W = 32, BAR_H = 190, BAR_PAD_T = 12, BAR_PAD_B = 38;
 function renderBarChart(container, monthly) {
   const { months, logs, actions, judgments } = monthly;
   const base = BAR_H - BAR_PAD_B;
-  const max = Math.max(4, ...logs, ...actions, ...judgments);
-  const step = Math.ceil(max / 4);
+  // 纵轴顶端要盖过最高柱：原来 max 取原值、刻度按 step 递增，
+  // 27 篇时刻度只到 21，最高的那根会冲出网格线。这里把 max 向上取整到 step 的倍数。
+  const rawMax = Math.max(4, ...logs, ...actions, ...judgments);
+  const step = Math.max(1, Math.ceil(rawMax / 4));
+  const max = Math.ceil(rawMax / step) * step;
   const y = v => BAR_PAD_T + (base - BAR_PAD_T) * (1 - v / max);
   const barW = Math.min(8, (MONTH_SLOT - 10) / 3);
+
+  // 卡片标题的年份区间跟着横轴走，不再写死「2016–2026」
+  const titleEl = $('#monthChartTitle');
+  if (titleEl && months.length) {
+    const y0 = months[0].slice(0, 4), y1 = months[months.length - 1].slice(0, 4);
+    titleEl.textContent = `动态数量 · 逐月（${y0}–${y1}，左右滚动查看）`;
+  }
 
   // 纵轴列：固定宽度，不随横向滚动移动
   const axisEl = $('#chartYAxis');
@@ -1168,6 +1184,8 @@ async function loadStages() {
   let st;
   try { st = await api('/api/stats'); } catch { st = DEMO.stats; }
   const stageTotal = OFFLINE ? DEMO.stageBands.length : list.length;
+  const stageCountEl = $('#stageCount');       // 卡片标题里的阶段数跟着实际条数走
+  if (stageCountEl) stageCountEl.textContent = stageTotal;
   $('#stageStats').innerHTML = [
     ['阶段总数', stageTotal], ['进行中', list.filter(s => s.is_active).length],
     ['动作闭环', `${st.actions.done} / ${st.actions.total}`],
