@@ -1,0 +1,10 @@
+# 活密钥与运行时状态：不入库
+# 不是隐私考虑——auth-token 与接口 Key 被扫到就是实打实的损失
+lifetrail-web/data/auth-token.txt
+lifetrail-web/data/ai-config.local.json
+lifetrail-web/data/chat-state.json
+
+# 系统与临时文件
+*.tmp
+Thumbs.db
+desktop.ini

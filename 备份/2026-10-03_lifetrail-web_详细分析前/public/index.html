@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>历程 · LifeTrail</title>
+<link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+<div class="smoke" id="smoke"><span class="s1"></span><span class="s2"></span><span class="s3"></span></div>
+<div class="grid-bg"></div>
+<svg width="0" height="0" style="position:absolute"><defs id="lg-defs"></defs></svg>
+
+<div class="layout">
+  <aside class="sidebar" data-glass data-radius="0" data-scale="10" data-band="22">
+    <div class="brand"><h1>历程</h1><p>LIFETRAIL</p></div>
+    <nav class="nav" id="nav">
+      <button data-p="overview" class="on">总览</button>
+      <button data-p="timeline">时间轴</button>
+      <button data-p="stages">阶段</button>
+      <button data-p="actions">动作</button>
+      <button data-p="judgments">判断</button>
+    </nav>
+    <div class="foot">v0.3 · 纯本地数据</div>
+  </aside>
+
+  <main class="main">
+    <section class="page on" id="p-overview">
+      <h2 class="pt" id="greet">你好</h2>
+      <p class="sub">所有变化，都值得被对比着看。</p>
+      <div class="cards" style="margin-top:24px">
+        <div class="card" data-glass><div class="k">日志底图</div><div class="v" id="stLogs">—</div></div>
+        <div class="card" data-glass><div class="k">洞察转化率</div><div class="v" id="stAct">—</div></div>
+        <div class="card" data-glass><div class="k">判断命中率</div><div class="v" id="stHit">—</div></div>
+        <div class="card" data-glass><div class="k">判断样本</div><div class="v" id="stSmp">—</div></div>
+      </div>
+      <div class="card wide" data-glass id="stageCard"></div>
+      <h3 class="sec">最近动态</h3>
+      <div class="card wide" data-glass><ul class="recent" id="recent"></ul></div>
+    </section>
+
+    <section class="page" id="p-timeline">
+      <h2 class="pt">时间轴</h2>
+      <p class="sub">一年一格 · 点击年份查看该年的大事件与年度总结</p>
+      <div class="bar">
+        <button class="btn" id="btnImport" style="margin-left:auto">导入日志清单</button>
+      </div>
+      <div class="card wide ruler-card" data-glass><div id="yearRuler"></div></div>
+      <div class="legend">
+        <span><i class="lg-band"></i>有记录年份（柱高=篇数）</span>
+        <span><i class="lg-empty"></i>无记录年份</span>
+        <span><i class="lg-now"></i>当前选中</span>
+      </div>
+      <div class="card wide" data-glass id="yearDetail"></div>
+
+      <h3 class="sec">逐条明细</h3>
+      <div class="bar"><select id="yearSel"></select></div>
+      <div id="timeline" class="card wide tl" data-glass></div>
+    </section>
+
+    <section class="page" id="p-stages">
+      <h2 class="pt">阶段</h2>
+      <div class="cards" style="margin-top:14px" id="stageStats"></div>
+
+      <div class="card wide" data-glass>
+        <div class="k">动态数量 · 2026 年逐月（日志 / 动作 / 判断）</div>
+        <div class="legend">
+          <span><i class="lg-log"></i>日志</span>
+          <span><i class="lg-act"></i>动作</span>
+          <span><i class="lg-jdg"></i>判断</span>
+        </div>
+        <div id="chartMonthly" class="chart"></div>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">状态变化 · 四象限快照（L0–L3）</div>
+        <div class="legend" id="snapLegend"></div>
+        <div id="chartSnapshot" class="chart"></div>
+        <div class="k" style="margin-top:8px;color:#6E6E73">
+          2026-10-01 为《human3.0建议》原始评估；其余三点按该阶段日志内容回溯判定。
+        </div>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">发展阶段模型 · 11 个可核验阶段</div>
+        <p class="sub" style="margin-top:6px">按 153 篇原始日志重新划分；每段同时说明主要变化、证据与解读边界。</p>
+        <div id="stageTheory" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card wide form" data-glass>
+        <input id="stName" placeholder="阶段名称，如：职业定位 60 天">
+        <input id="stPurpose" placeholder="这个阶段的目的（一句话）">
+        <button class="btn primary" id="stAdd">建立阶段（同时结束当前阶段）</button>
+      </div>
+      <div id="stageList"></div>
+    </section>
+
+    <section class="page" id="p-actions">
+      <h2 class="pt">动作</h2>
+      <div class="card wide form" data-glass>
+        <input id="acContent" placeholder="一个当天可完成、有可见痕迹的动作">
+        <input id="acSource" placeholder="来源洞察（日志 ID，可留空）" style="max-width:280px">
+        <button class="btn primary" id="acAdd">记录动作</button>
+      </div>
+      <div id="actionList"></div>
+    </section>
+
+    <section class="page" id="p-judgments">
+      <h2 class="pt">判断台账</h2>
+      <div class="card wide form" data-glass>
+        <input id="jdQ" placeholder="要判断的问题">
+        <input id="jdD" placeholder="我的决定">
+        <input id="jdP" placeholder="预测会发生什么（先写预测，后回填结果）">
+        <button class="btn primary" id="jdAdd">立一条判断</button>
+      </div>
+      <div id="jdList"></div>
+    </section>
+  </main>
+</div>
+<script src="glass.js?v=5"></script>
+<script src="app.js?v=5"></script>
+</body>
+</html>

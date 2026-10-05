@@ -1,0 +1,475 @@
+{
+  "sha": "9a4e9fe4c030283ed0a0f6db3fd6dbbd340b2dc9",
+  "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/trees/9a4e9fe4c030283ed0a0f6db3fd6dbbd340b2dc9",
+  "tree": [
+    {
+      "path": "1.jpg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ee1f7fef97aa66c1f429d6e84b3a356e4b3716c1",
+      "size": 97555,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/ee1f7fef97aa66c1f429d6e84b3a356e4b3716c1"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "de870804706ccbec6d46e1ffc8fd9fa90cf195bc",
+      "size": 3103,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/de870804706ccbec6d46e1ffc8fd9fa90cf195bc"
+    },
+    {
+      "path": "game.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a6526e266569a3238245118e060b0da629e70c02",
+      "size": 3939,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/a6526e266569a3238245118e060b0da629e70c02"
+    },
+    {
+      "path": "game.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "10db2962738f5c521d116ee344752e8124b3da12",
+      "size": 8406,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/10db2962738f5c521d116ee344752e8124b3da12"
+    },
+    {
+      "path": "index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b45d74f5787fc8a08c06cc7549bf2a1d57d04a21",
+      "size": 838,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/b45d74f5787fc8a08c06cc7549bf2a1d57d04a21"
+    },
+    {
+      "path": "introduction.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1b42d198e4f95484e4f2f8e9cd52fae872b081c4",
+      "size": 32603,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/1b42d198e4f95484e4f2f8e9cd52fae872b081c4"
+    },
+    {
+      "path": "item.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dd4ad14b24092d3f2cdd8eeb54bf952c15de01e5",
+      "size": 5186,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/dd4ad14b24092d3f2cdd8eeb54bf952c15de01e5"
+    },
+    {
+      "path": "mofang.gltf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b564f58a969984c0ca789fe432a0449476c54c4b",
+      "size": 2769277,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/b564f58a969984c0ca789fe432a0449476c54c4b"
+    },
+    {
+      "path": "note",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "897778bcbd6cc2793d28fc1c2e8c7c2a55604097",
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/trees/897778bcbd6cc2793d28fc1c2e8c7c2a55604097"
+    },
+    {
+      "path": "note/deep-learning.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fba0ab3602abc209d314399b39a4edf0c06f22a3",
+      "size": 5989,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/fba0ab3602abc209d314399b39a4edf0c06f22a3"
+    },
+    {
+      "path": "note/game-ai.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f569c06d1775c8375f30768ea772a3fd8c1dfabd",
+      "size": 6516,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/f569c06d1775c8375f30768ea772a3fd8c1dfabd"
+    },
+    {
+      "path": "note/game-design.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0b3a57e35dd72cc2b4de87af0f501bb88dd22fc1",
+      "size": 4600,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/0b3a57e35dd72cc2b4de87af0f501bb88dd22fc1"
+    },
+    {
+      "path": "note/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "afa160533885612710a21a147f1c50c606f20bb3",
+      "size": 9397,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/afa160533885612710a21a147f1c50c606f20bb3"
+    },
+    {
+      "path": "note/ml-basics.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fddc29316ce4009deaa3b5f43bc9a2220e812f8b",
+      "size": 5276,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/fddc29316ce4009deaa3b5f43bc9a2220e812f8b"
+    },
+    {
+      "path": "note/mobile-design.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8e1c354588dc1314d0abe28ecf1e38d27b289b9d",
+      "size": 4973,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/8e1c354588dc1314d0abe28ecf1e38d27b289b9d"
+    },
+    {
+      "path": "note/unity-3d.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d01feeb41375be7559299b0a721ddbbc601fb9ef",
+      "size": 5826,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/d01feeb41375be7559299b0a721ddbbc601fb9ef"
+    },
+    {
+      "path": "note/unreal-engine-gameplay-framework.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a60f58a209c92f48bfd4cae8165ea4892b30a9b3",
+      "size": 17769,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/a60f58a209c92f48bfd4cae8165ea4892b30a9b3"
+    },
+    {
+      "path": "note/ux-design.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d063c6caefdd7de9b92cd3edcbd36e47157d701",
+      "size": 4765,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/1d063c6caefdd7de9b92cd3edcbd36e47157d701"
+    },
+    {
+      "path": "note/web-design.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9ec0f9cfc60d89e3cdf4736f8af4b6b96abf633f",
+      "size": 4780,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/9ec0f9cfc60d89e3cdf4736f8af4b6b96abf633f"
+    },
+    {
+      "path": "portfolio",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fb2bd9b612b1ebdef7e68fd9092179b7c55c9904",
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/trees/fb2bd9b612b1ebdef7e68fd9092179b7c55c9904"
+    },
+    {
+      "path": "portfolio/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3f4c1023021d32108ba2585ee1194c3e8b8e5004",
+      "size": 19705,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/3f4c1023021d32108ba2585ee1194c3e8b8e5004"
+    },
+    {
+      "path": "portfolio/slides",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3deb15c7594462d4e15fbd68c7609b489e640d75",
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/trees/3deb15c7594462d4e15fbd68c7609b489e640d75"
+    },
+    {
+      "path": "portfolio/slides/幻灯片1.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1a724d3917e590aeadc38ab83a27e703311e574a",
+      "size": 86402,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/1a724d3917e590aeadc38ab83a27e703311e574a"
+    },
+    {
+      "path": "portfolio/slides/幻灯片10.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1f9e6e86f684b448406244a6a787bbd031960e35",
+      "size": 435548,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/1f9e6e86f684b448406244a6a787bbd031960e35"
+    },
+    {
+      "path": "portfolio/slides/幻灯片11.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f3a94c2701b456c9889119bad9f76dff906a61c2",
+      "size": 476767,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/f3a94c2701b456c9889119bad9f76dff906a61c2"
+    },
+    {
+      "path": "portfolio/slides/幻灯片12.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "445f78d8c29b5c8f581119672bf2772f6ad0d0e9",
+      "size": 431721,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/445f78d8c29b5c8f581119672bf2772f6ad0d0e9"
+    },
+    {
+      "path": "portfolio/slides/幻灯片13.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9cd292bbb64896c1306dabea8f94cce3a44dfdd5",
+      "size": 293962,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/9cd292bbb64896c1306dabea8f94cce3a44dfdd5"
+    },
+    {
+      "path": "portfolio/slides/幻灯片14.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1814ef6abf9c349d4bc6b66d228fdd92fed90479",
+      "size": 443372,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/1814ef6abf9c349d4bc6b66d228fdd92fed90479"
+    },
+    {
+      "path": "portfolio/slides/幻灯片15.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "372e5e06efe13a452e9ca6ed0648dbfe1e759a99",
+      "size": 169867,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/372e5e06efe13a452e9ca6ed0648dbfe1e759a99"
+    },
+    {
+      "path": "portfolio/slides/幻灯片16.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ccf35cc0e8f0c2c8084401fb88863d137152452c",
+      "size": 385480,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/ccf35cc0e8f0c2c8084401fb88863d137152452c"
+    },
+    {
+      "path": "portfolio/slides/幻灯片17.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dc4ea3a86b15068b8d200751e3012dbb577fa493",
+      "size": 83410,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/dc4ea3a86b15068b8d200751e3012dbb577fa493"
+    },
+    {
+      "path": "portfolio/slides/幻灯片18.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "027547e3456ca4fd098e3c95bd3c4315266dba15",
+      "size": 220669,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/027547e3456ca4fd098e3c95bd3c4315266dba15"
+    },
+    {
+      "path": "portfolio/slides/幻灯片19.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5712b4e50e08250fdfac9ed308071413e685315c",
+      "size": 205870,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/5712b4e50e08250fdfac9ed308071413e685315c"
+    },
+    {
+      "path": "portfolio/slides/幻灯片2.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "18de6b9f0ba644f153cd2fbf1b257a2ee1272465",
+      "size": 121222,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/18de6b9f0ba644f153cd2fbf1b257a2ee1272465"
+    },
+    {
+      "path": "portfolio/slides/幻灯片20.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "11a6d8cb93c03739d69bf55c14312f7fe96c1f75",
+      "size": 251670,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/11a6d8cb93c03739d69bf55c14312f7fe96c1f75"
+    },
+    {
+      "path": "portfolio/slides/幻灯片21.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "61f658f7c4b213966e351bd1ece802475a3f2223",
+      "size": 80685,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/61f658f7c4b213966e351bd1ece802475a3f2223"
+    },
+    {
+      "path": "portfolio/slides/幻灯片22.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "665e371537cec934fd92c99317b6bead2009c151",
+      "size": 368433,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/665e371537cec934fd92c99317b6bead2009c151"
+    },
+    {
+      "path": "portfolio/slides/幻灯片23.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b19c8bc9919fc81e87130c5f618a21117ad7e76a",
+      "size": 376717,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/b19c8bc9919fc81e87130c5f618a21117ad7e76a"
+    },
+    {
+      "path": "portfolio/slides/幻灯片24.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "077efd572fc55cb206a61bffb9523fddd8a9ec45",
+      "size": 318426,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/077efd572fc55cb206a61bffb9523fddd8a9ec45"
+    },
+    {
+      "path": "portfolio/slides/幻灯片25.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "83cf66f8368aae6ac6b5f47d0d7e26e8984718c7",
+      "size": 338332,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/83cf66f8368aae6ac6b5f47d0d7e26e8984718c7"
+    },
+    {
+      "path": "portfolio/slides/幻灯片26.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f52b5947992a46eb6cb538bfa62209be9403717b",
+      "size": 304180,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/f52b5947992a46eb6cb538bfa62209be9403717b"
+    },
+    {
+      "path": "portfolio/slides/幻灯片27.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "11eb7822e3da8a23c04ec8e913c31f759e321fb5",
+      "size": 81934,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/11eb7822e3da8a23c04ec8e913c31f759e321fb5"
+    },
+    {
+      "path": "portfolio/slides/幻灯片28.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "911b96647be1392557eaad1ec3ed51f4321345ff",
+      "size": 426447,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/911b96647be1392557eaad1ec3ed51f4321345ff"
+    },
+    {
+      "path": "portfolio/slides/幻灯片29.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5b81e4a539bdd5375b2ba29e8ecf9a1f37b8645e",
+      "size": 221827,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/5b81e4a539bdd5375b2ba29e8ecf9a1f37b8645e"
+    },
+    {
+      "path": "portfolio/slides/幻灯片3.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a6c2cb8e703edd8db6f0ffa727143894ab92a1e9",
+      "size": 78025,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/a6c2cb8e703edd8db6f0ffa727143894ab92a1e9"
+    },
+    {
+      "path": "portfolio/slides/幻灯片30.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1a2920f08136afadad7dd0471fa7c1f23b8ba308",
+      "size": 165182,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/1a2920f08136afadad7dd0471fa7c1f23b8ba308"
+    },
+    {
+      "path": "portfolio/slides/幻灯片4.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "884dff39d1d3d8aa4a2ea37b557f10fcfb5795a9",
+      "size": 274479,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/884dff39d1d3d8aa4a2ea37b557f10fcfb5795a9"
+    },
+    {
+      "path": "portfolio/slides/幻灯片5.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eb452ebb4355360eb53d4fff59924ef66fb8f7dc",
+      "size": 469450,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/eb452ebb4355360eb53d4fff59924ef66fb8f7dc"
+    },
+    {
+      "path": "portfolio/slides/幻灯片6.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5ae084f216d3f691256afcf923a5c1d639016f08",
+      "size": 635641,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/5ae084f216d3f691256afcf923a5c1d639016f08"
+    },
+    {
+      "path": "portfolio/slides/幻灯片7.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9d66c588b26ab72997ad9e1018c4042caad6789a",
+      "size": 500883,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/9d66c588b26ab72997ad9e1018c4042caad6789a"
+    },
+    {
+      "path": "portfolio/slides/幻灯片8.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "396c012a421c60dfd998e2747d4a6f5e263e2c06",
+      "size": 446322,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/396c012a421c60dfd998e2747d4a6f5e263e2c06"
+    },
+    {
+      "path": "portfolio/slides/幻灯片9.JPG",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9304e6e802d8538318bfeebc9e4e7625f13c6caf",
+      "size": 528746,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/9304e6e802d8538318bfeebc9e4e7625f13c6caf"
+    },
+    {
+      "path": "portfolio/~$李东盛作品集.pptx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "41bc8ac9d58b8ab9a00bb456b9f1e3cb51c467da",
+      "size": 165,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/41bc8ac9d58b8ab9a00bb456b9f1e3cb51c467da"
+    },
+    {
+      "path": "portfolio/李东盛作品集.pdf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fae2ebb1d29b414bd3c04b5a8795603fe870ff5f",
+      "size": 11755916,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/fae2ebb1d29b414bd3c04b5a8795603fe870ff5f"
+    },
+    {
+      "path": "portfolio/李东盛作品集.pptx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9191f5820e2a4f7f01ba6840c50b053f7befea68",
+      "size": 103792008,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/9191f5820e2a4f7f01ba6840c50b053f7befea68"
+    },
+    {
+      "path": "scene.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e440105a85daf410d3efcbf6d48e061831a9ec0d",
+      "size": 13172,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/e440105a85daf410d3efcbf6d48e061831a9ec0d"
+    },
+    {
+      "path": "script.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0f70e94a1dc1180dc4741bf1d08cc77bf5aeb49d",
+      "size": 13782,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/0f70e94a1dc1180dc4741bf1d08cc77bf5aeb49d"
+    },
+    {
+      "path": "杂项",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "dd5bf8acd5f2b0e99141cc97437d36999a692613",
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/trees/dd5bf8acd5f2b0e99141cc97437d36999a692613"
+    },
+    {
+      "path": "杂项/屏幕截图 2025-11-09 192525.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f7e60432a22b73b6c883980623dd363a41505144",
+      "size": 187311,
+      "url": "https://api.github.com/repos/AaronSwartz0217/Else-Web/git/blobs/f7e60432a22b73b6c883980623dd363a41505144"
+    }
+  ],
+  "truncated": false
+}

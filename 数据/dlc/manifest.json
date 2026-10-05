@@ -1,0 +1,140 @@
+{
+  "version": "1.3",
+  "created_at": "2026-10-03",
+  "updated_at": "2026-10-04",
+  "files": [
+    {
+      "path": "01_个人信息与关系时间线补丁.md",
+      "bytes": 5420,
+      "sha256": "87B06D4A53BC621EF91418CD73E80CF7D48FB803B02AD8512010B8B00B2BFE11"
+    },
+    {
+      "path": "02_个人网站与GitHub项目索引.md",
+      "bytes": 15596,
+      "sha256": "FFCD81E80701349F272FC9A76B98200351EA1A40BD483536B596A7FF92522256"
+    },
+    {
+      "path": "03_超我Skills本地资料说明.md",
+      "bytes": 5112,
+      "sha256": "63EDDB5775F9EFF6BA753761AB41592DF90E80F08E926AF0088DE536CD88BE0F"
+    },
+    {
+      "path": "04_关系补充说明_本人确认.md",
+      "bytes": 7059,
+      "sha256": "19B2539F5378F8052A4D1A1EAD58416C513ABD1A1EE07A376DC561926C2C0A90"
+    },
+    {
+      "path": "05_身体生活家庭与经济状况_本人确认.md",
+      "bytes": 2507,
+      "sha256": "9F2550DB1B4954DAE30EFD538C2B4565A55CE6A48EC2A92A1C50A23EF04AA76A"
+    },
+    {
+      "path": "06_大学阶段补充_本人确认.md",
+      "bytes": 3488,
+      "sha256": "CF11732D90F5399B2FB0883A3E6CA0E04CF20CF395A9677CDB46B05BC8EE0BAA"
+    },
+    {
+      "path": "07_十年时间线_详版含推断.md",
+      "bytes": 20179,
+      "sha256": "C2EEB2377C67327A91978C75E300C4A01B8CDBA592E06BF6F40CAB6E74AF3D3F"
+    },
+    {
+      "path": "08_语气与对话风格补丁.md",
+      "bytes": 3897,
+      "sha256": "D3639C542AA087D9C4EC2EF160E8C26A7BAA34AB9D1BC2C4A41B4CF1ECFB2650"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3890,
+      "sha256": "13B04317CE21E08579A2D09FE8E5438CA07FD35B280C3AB09F380415EA554546"
+    },
+    {
+      "path": "数据快照/else_web_tree_snapshot.json",
+      "bytes": 18305,
+      "sha256": "820BBE92F152BE37A572063D74FDDB5FD50FF3D91E1E450FB52BB79AEB223A63"
+    },
+    {
+      "path": "数据快照/github_profile_snapshot.json",
+      "bytes": 1432,
+      "sha256": "52D2EE101B241DD8109EB0867A27A22D5B40D123A8222E72B831E0A494C18C16"
+    },
+    {
+      "path": "数据快照/github_repos_snapshot.json",
+      "bytes": 159195,
+      "sha256": "A2D8AE5E60A75B10D516458842D373BDB303883DE193DCF9374181484DC2676E"
+    },
+    {
+      "path": "数据快照/personal_profile_patch.json",
+      "bytes": 1391,
+      "sha256": "B971EF5555C47FC440F51A3B3306C200B35BFC3969494DA021A556C8903661FA"
+    },
+    {
+      "path": "超我Skills快照/else_super_ego_v2.md",
+      "bytes": 12352,
+      "sha256": "C350444B5E8B0325DB348EC5F6496CCDEB9910CF6038BBAB0269EF69AFB452A9"
+    },
+    {
+      "path": "超我Skills快照/paper.md",
+      "bytes": 3855,
+      "sha256": "C74FE14B6CC62440726894E63A4AAB0D84374112261D53E2CF9DFF4D5DE313A4"
+    },
+    {
+      "path": "超我Skills快照/README.md",
+      "bytes": 16521,
+      "sha256": "2C37314F16FE9B0E91C79C9F1CD48F2E35C5BB5AD3EC9A51FAAEF1BB24ABABF3"
+    },
+    {
+      "path": "超我Skills快照/SUPER_EGO_SKILL_TEMPLATE.md",
+      "bytes": 8697,
+      "sha256": "1307418288D6BB235645F55CA1B1424F11AAC1BA5045673E14D4C9C1F6946EA9"
+    }
+  ],
+  "github": {
+    "user": "AaronSwartz0217",
+    "public_repos": 25,
+    "profile_updated_at": "2026-10-03T03:36:33Z",
+    "else_web_tree_sha": "9a4e9fe4c030283ed0a0f6db3fd6dbbd340b2dc9"
+  },
+  "super_ego_skill": {
+    "source": "C:\\Users\\29717\\Desktop\\vibe\\超我",
+    "git_head": "2f87c39379c223e849d126d402a8a30d8abc9fd9",
+    "files": [
+      {
+        "name": "README.md",
+        "source": "C:\\Users\\29717\\Desktop\\vibe\\超我\\README.md",
+        "snapshot": "dlc\\超我Skills快照\\README.md",
+        "bytes": 16521,
+        "modified_local": "2026-06-16T23:19:16",
+        "sha256": "2C37314F16FE9B0E91C79C9F1CD48F2E35C5BB5AD3EC9A51FAAEF1BB24ABABF3",
+        "privacy": "public-repository-file"
+      },
+      {
+        "name": "paper.md",
+        "source": "C:\\Users\\29717\\Desktop\\vibe\\超我\\paper.md",
+        "snapshot": "dlc\\超我Skills快照\\paper.md",
+        "bytes": 3855,
+        "modified_local": "2026-06-16T23:18:41",
+        "sha256": "C74FE14B6CC62440726894E63A4AAB0D84374112261D53E2CF9DFF4D5DE313A4",
+        "privacy": "public-repository-file"
+      },
+      {
+        "name": "SUPER_EGO_SKILL_TEMPLATE.md",
+        "source": "C:\\Users\\29717\\Desktop\\vibe\\超我\\SUPER_EGO_SKILL_TEMPLATE.md",
+        "snapshot": "dlc\\超我Skills快照\\SUPER_EGO_SKILL_TEMPLATE.md",
+        "bytes": 8697,
+        "modified_local": "2026-06-16T23:12:55",
+        "sha256": "1307418288D6BB235645F55CA1B1424F11AAC1BA5045673E14D4C9C1F6946EA9",
+        "privacy": "public-repository-file"
+      },
+      {
+        "name": "else_super_ego_v2.md",
+        "source": "C:\\Users\\29717\\Desktop\\vibe\\超我\\else_super_ego_v2.md",
+        "snapshot": "dlc\\超我Skills快照\\else_super_ego_v2.md",
+        "bytes": 12352,
+        "modified_local": "2026-06-16T22:49:38",
+        "sha256": "C350444B5E8B0325DB348EC5F6496CCDEB9910CF6038BBAB0269EF69AFB452A9",
+        "privacy": "private-local"
+      }
+    ]
+  }
+}

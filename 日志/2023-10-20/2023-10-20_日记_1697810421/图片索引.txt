@@ -1,0 +1,5 @@
+001.png	https://qzonestyle.gtimg.cn/qzone/em/e115.gif
+002.png	https://qzonestyle.gtimg.cn/qzone/em/e282.gif
+003.png	https://qzonestyle.gtimg.cn/qzone/em/e165.gif
+004.png	https://qzonestyle.gtimg.cn/qzone/em/e270.gif
+005.png	https://qzonestyle.gtimg.cn/qzone/em/e271.gif

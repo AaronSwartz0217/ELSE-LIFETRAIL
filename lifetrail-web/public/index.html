@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>历程 · LifeTrail</title>
+<meta name="lt-token" content="__LIFETRAIL_TOKEN__">
+<link rel="stylesheet" href="style.css?v=40">
+</head>
+<body>
+<div class="bg-shift"></div>
+<div class="grid-bg"></div>
+<svg width="0" height="0" style="position:absolute"><defs id="lg-defs"></defs></svg>
+
+<div class="layout">
+  <aside class="sidebar" data-glass data-radius="0" data-scale="10" data-band="22">
+    <div class="brand"><h1>历程</h1><p>LIFETRAIL</p></div>
+    <nav class="nav" id="nav">
+      <button data-p="overview" class="on">总览</button>
+      <button data-p="timeline">时间轴</button>
+      <button data-p="stages">阶段</button>
+      <button data-p="actions">动作</button>
+      <button data-p="judgments">判断</button>
+      <button data-p="plan">计划白板</button>
+      <button data-p="review">评价</button>
+      <button data-p="body">身体</button>
+      <button data-p="updates">更新</button>
+      <button data-p="chat">对话</button>
+    </nav>
+    <div class="foot">v0.5 · 纯本地数据</div>
+  </aside>
+
+  <main class="main">
+    <section class="page on" id="p-overview">
+      <h2 class="pt" id="greet">你好</h2>
+      <p class="sub">所有变化，都值得被对比着看。</p>
+      <div class="cards" style="margin-top:24px">
+        <div class="card" data-glass><div class="k">日志底图</div><div class="v" id="stLogs">—</div></div>
+        <div class="card" data-glass><div class="k">洞察转化率</div><div class="v" id="stAct">—</div></div>
+        <div class="card" data-glass><div class="k">判断命中率</div><div class="v" id="stHit">—</div></div>
+        <div class="card" data-glass><div class="k">判断样本</div><div class="v" id="stSmp">—</div></div>
+      </div>
+      <div class="gauges" style="margin-top:14px">
+        <div class="card gauge" data-glass>
+          <div class="k">状态 · 是否最佳</div>
+          <div class="ring" id="ringState">—</div>
+          <div class="sub" id="ringStateNote"></div>
+        </div>
+        <div class="card gauge" data-glass>
+          <div class="k">稳定度 · 趋近计划</div>
+          <div class="ring" id="ringStable">—</div>
+          <div class="sub" id="ringStableNote"></div>
+        </div>
+      </div>
+      <div class="card wide" data-glass id="stageCard"></div>
+      <h3 class="sec">最近动态</h3>
+      <div class="card wide" data-glass><ul class="recent" id="recent"></ul></div>
+    </section>
+
+    <section class="page" id="p-timeline">
+      <h2 class="pt">时间轴</h2>
+      <p class="sub">一年一格 · 点年份看大事件与年度变化（转折点见下方「全量分析」，红细刻度在「阶段」页的逐月图上）</p>
+      <div class="bar">
+        <button class="btn" id="btnImport" style="margin-left:auto">导入日志清单</button>
+      </div>
+      <div class="ruler-shell">
+        <button class="scroll-arrow horizontal left" id="yearLeft" aria-label="向左查看年份"></button>
+        <div class="card ruler-card" data-glass id="yearScroller"><div id="yearRuler"></div></div>
+        <button class="scroll-arrow horizontal right" id="yearRight" aria-label="向右查看年份"></button>
+      </div>
+      <div class="legend">
+        <span><i class="lg-band"></i>有记录年份（柱高=篇数）</span>
+        <span><i class="lg-empty"></i>无记录年份</span>
+        <span><i class="lg-now"></i>当前选中</span>
+      </div>
+      <div class="card wide" data-glass id="yearDetail"></div>
+
+      <h3 class="sec">全量分析 · 8 个转折点</h3>
+      <p class="sub" style="margin-bottom:12px">依据全部 <span data-lognum>154</span> 篇日志与 DLC 01–07 重排；红线＝结构性转折（有本人确认或硬事件），橙线＝过程性转折（以推断为主）。点任一条看该转折的时点、具体内容、原因与证据。</p>
+      <div id="tpList" class="tp-list"></div>
+
+      <h3 class="sec">逐条明细</h3>
+      <div class="bar"><select id="yearSel"></select></div>
+      <div id="timeline" class="card wide tl" data-glass></div>
+    </section>
+
+    <section class="page" id="p-stages">
+      <h2 class="pt">阶段</h2>
+      <div class="cards" style="margin-top:14px" id="stageStats"></div>
+
+      <div class="card wide" data-glass>
+        <div class="k">动态数量 · 逐月（2016–2026，左右滚动查看）</div>
+        <div class="legend">
+          <span><i class="lg-log"></i>日志</span>
+          <span><i class="lg-act"></i>动作</span>
+          <span><i class="lg-jdg"></i>判断</span>
+          <span><i class="lg-tp-red"></i>转折点（红细线，可点）</span>
+        </div>
+        <div class="ruler-shell">
+          <button class="scroll-arrow horizontal left" id="monthLeft" aria-label="向左查看月份"></button>
+          <div class="chart-row">
+            <div class="chart-yaxis" id="chartYAxis"></div>
+            <div class="chart-scroll" id="monthScroller"><div id="chartMonthly"></div></div>
+          </div>
+          <button class="scroll-arrow horizontal right" id="monthRight" aria-label="向右查看月份"></button>
+        </div>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">状态变化 · 四象限快照（L0–L3）</div>
+        <div class="legend" id="snapLegend"></div>
+        <div id="chartSnapshot" class="chart"></div>
+        <div class="k" style="margin-top:18px">MBTI · 四维度变化（0=不偏此极，1=明显偏此极；推断）</div>
+        <div class="legend" id="mbtiLegend"></div>
+        <div id="chartMbti" class="chart"></div>
+        <div id="mbtiNote"></div>
+        <div class="k" style="margin-top:8px;color:#6E6E73">框架：Human 3.0 四象限（L0–L3）· MBTI（自我描述）。</div>
+        <div id="snapBasis"></div>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">发展阶段模型 · 11 个可核验阶段</div>
+        <p class="sub" style="margin-top:6px">按 <span data-lognum>154</span> 篇原始日志与补回图片重新划分；每段列出关键证据、真正变化、尚未完成与解释边界。</p>
+        <div id="stageTheory" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card wide form" data-glass>
+        <input id="stName" placeholder="阶段名称，如：职业定位 60 天">
+        <input id="stPurpose" placeholder="这个阶段的目的（一句话）">
+        <button class="btn primary" id="stAdd">建立阶段（同时结束当前阶段）</button>
+      </div>
+      <div id="stageList"></div>
+    </section>
+
+    <section class="page" id="p-actions">
+      <h2 class="pt">动作</h2>
+      <p class="sub">练手 · 做了什么，以及有没有留下可检验的痕迹</p>
+      <div class="card wide form" data-glass>
+        <input id="acContent" placeholder="一个可完成、有可见痕迹的动作">
+        <input id="acTrace" placeholder="可见痕迹（链接 / 截图说明 / 结果一句话）">
+        <input id="acSource" placeholder="来源洞察（日志 ID，可留空）" style="max-width:240px">
+        <button class="btn primary" id="acAdd">记录动作</button>
+      </div>
+      <div id="actionList"></div>
+    </section>
+
+    <section class="page" id="p-judgments">
+      <h2 class="pt">判断台账</h2>
+      <p class="sub">只列有出处的“问题 / 决定 / 实际”，不做结果对错评分</p>
+      <div class="card wide form" data-glass>
+        <input id="jdQ" placeholder="要判断的问题">
+        <input id="jdD" placeholder="我的决定">
+        <input id="jdP" placeholder="预测会发生什么（先写预测，后回填结果）">
+        <button class="btn primary" id="jdAdd">立一条判断</button>
+      </div>
+      <div id="jdList"></div>
+    </section>
+
+    <section class="page" id="p-body">
+      <h2 class="pt">身体</h2>
+      <p class="sub">锻炼部位、目的需求与作息 · 依据：本人 2026-10-03 确认（DLC 05）+ 2026-10-01 日志</p>
+
+      <div class="cards" style="margin-top:24px">
+        <div class="card" data-glass><div class="k">起点</div><div class="v" style="font-size:22px">2025-12</div><div class="sub" style="margin-top:4px">大转变后开始规律运动</div></div>
+        <div class="card" data-glass><div class="k">当前等级</div><div class="v" style="font-size:22px">L1–L2</div><div class="sub" style="margin-top:4px">够用，未主动优化</div></div>
+        <div class="card" data-glass><div class="k">作息</div><div class="v" style="font-size:22px">1 点前睡</div><div class="sub" style="margin-top:4px">睡够但偏晚</div></div>
+        <div class="card" data-glass><div class="k">精力</div><div class="v" style="font-size:22px">还可以</div><div class="sub" style="margin-top:4px">不吸烟、不饮酒</div></div>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">锻炼部位 · 对应目标</div>
+        <div style="margin-top:8px;font-size:12.5px">
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:#F5F5F7;font-weight:600;min-width:72px">肩 · 背</b>
+            <span style="color:#A1A1A6">练肩膀与背部 —— 改善体态与线条</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:#F5F5F7;font-weight:600;min-width:72px">面部</b>
+            <span style="color:#A1A1A6">瘦脸 —— 外观目标</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px">
+            <b style="color:#F5F5F7;font-weight:600;min-width:72px">脊柱</b>
+            <span style="color:#A1A1A6">治好脊柱侧弯 —— 健康诉求（诊断与进度待跟踪）</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">常见动作</div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px">
+          <span style="display:inline-flex;padding:5px 12px;border:1px solid rgba(245,245,247,.18);border-radius:999px;font-size:12px;color:#F5F5F7">飞鸟</span>
+          <span style="display:inline-flex;padding:5px 12px;border:1px solid rgba(245,245,247,.18);border-radius:999px;font-size:12px;color:#F5F5F7">背部拉伸</span>
+          <span style="display:inline-flex;padding:5px 12px;border:1px solid rgba(245,245,247,.18);border-radius:999px;font-size:12px;color:#F5F5F7">肱二头顺势带动背部</span>
+          <span style="display:inline-flex;padding:5px 12px;border:1px solid rgba(245,245,247,.18);border-radius:999px;font-size:12px;color:#F5F5F7">吊单杠</span>
+        </div>
+        <p class="sub" style="margin-top:12px">当前频率：每天约四组飞鸟，动作偏单一。</p>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">目的 · 需求</div>
+        <div style="margin-top:8px;font-size:12.5px">
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:#F5F5F7;font-weight:600;min-width:72px">直接目的</b>
+            <span style="color:#A1A1A6">练肩背、瘦脸、改善脊柱侧弯</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:#F5F5F7;font-weight:600;min-width:72px">根本需求</b>
+            <span style="color:#A1A1A6">身体目前很重要；但它处于“够用”状态，支撑不了更高强度的职业突破</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px">
+            <b style="color:#F5F5F7;font-weight:600;min-width:72px">优化方向</b>
+            <span style="color:#A1A1A6">60 天建议（待验证）：23:30 前睡、7:30 起；运动改为飞鸟 + 深蹲 + 快走，每天 20 分钟</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card wide" data-glass>
+        <div class="k">待确认</div>
+        <ul class="recent" style="margin-top:8px">
+          <li><span>锻炼地点（家 / 健身房 / 公园）暂无记录</span></li>
+          <li><span>脊柱侧弯的诊断与改善进度是否要持续跟踪</span></li>
+          <li><span>作息与运动频率属动态信息，回答前需重新确认</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="page" id="p-review">
+      <h2 class="pt">评价</h2>
+      <p class="sub">一份不客气的体检报告 · 依据全部 <span data-lognum>154</span> 篇日志与 DLC 01–08 全量分析（AI 综合，非自评）</p>
+
+      <div class="rev-hero card wide" data-glass id="revHero"></div>
+
+      <h3 class="sec">六维刻度 · 点维度切换</h3>
+      <div id="revMeters"></div>
+
+      <h3 class="sec">十年产出 · 粒子星图</h3>
+      <div class="card wide rev-canvas-card">
+        <canvas id="revCanvas" width="1040" height="230"></canvas>
+        <div class="sub" id="revCanvasNote">每一颗粒子 = 一篇日志；横向位置 = 写下它的月份。把鼠标移进去，它们会躲开。</div>
+      </div>
+
+      <h3 class="sec">七条锐评 · 点开看全文</h3>
+      <div id="revCritiques" class="rev-critiques"></div>
+
+      <h3 class="sec">结语</h3>
+      <div class="card wide rev-outro" data-glass id="revOutro"></div>
+    </section>
+
+    <section class="page" id="p-plan">
+      <h2 class="pt">计划白板</h2>
+      <p class="sub">按白板分开管理，每块白板各自存一份 md 供 AI 直接读取（<span id="boardDir">data/boards</span>）。拖动便签可换列；把白板标签或便签拖到下面两个区域，即可改名 / 编辑或删除；点带 ▾ 的便签展开参考要点，改动会即时写回文件。</p>
+
+      <div class="board-bar">
+        <div class="board-tabs" id="boardTabs"></div>
+        <div class="board-new">
+          <input id="boardNewName" placeholder="新白板名称，如：作品集白板">
+          <button class="btn primary" type="button" id="boardNew">＋ 新建白板</button>
+        </div>
+      </div>
+
+      <form class="bar plan-add" id="planAddForm">
+        <span class="sub" id="planCount"></span>
+        <input id="planNew" placeholder="新便签：写一件事，回车贴到白板上">
+        <div class="drop-zone" id="dropEdit" title="把白板标签或便签拖到这里：白板改名 / 便签重命名与编辑">拖到这儿 · 重命名 / 编辑</div>
+        <div class="drop-zone danger" id="dropDel" title="把白板标签或便签拖到这里：删除">拖到这儿 · 删除</div>
+        <button class="btn primary" type="submit">＋ 贴上</button>
+      </form>
+
+      <div class="wall" id="planWall"></div>
+    </section>
+
+    <section class="page" id="p-updates">
+      <h2 class="pt">更新</h2>
+      <p class="sub">每次对站点与数据的改动索引 · 按时间倒序</p>
+      <div id="updateList"></div>
+    </section>
+
+    <section class="page" id="p-chat">
+      <div class="chat-head">
+        <div>
+          <h2 class="pt">对话</h2>
+          <p class="sub">基于全部日志的证据检索、长期记忆与分析；日志中的文字只作为资料，不会被当作系统指令。</p>
+        </div>
+        <span class="chat-status" id="chatStatus">正在连接本地接口…</span>
+      </div>
+
+      <div class="chat-layout">
+        <div class="card chat-main" data-glass>
+          <div class="chat-messages" id="chatMessages"></div>
+          <form class="chat-composer" id="chatForm">
+            <textarea id="chatInput" rows="3" placeholder="问一段经历、寻找反复模式，或输入“记住：……”建立长期记忆"></textarea>
+            <div class="chat-actions">
+              <span class="sub">Enter 发送 · Shift+Enter 换行</span>
+              <button class="btn" type="button" id="chatAnalyze">分析当前对话</button>
+              <button class="btn primary" type="submit" id="chatSend">发送</button>
+            </div>
+          </form>
+        </div>
+
+        <aside class="chat-side">
+          <div class="card" data-glass>
+            <div class="panel-title">模型接入 <span class="badge" id="aiMode">—</span></div>
+            <div class="mode-switch" id="aiModeSwitch" role="tablist" aria-label="模型开关">
+              <button type="button" data-mode="off">关闭</button>
+              <button type="button" data-mode="local">本地</button>
+              <button type="button" data-mode="external">外接</button>
+            </div>
+            <p class="tiny" id="aiHint" style="margin-top:9px"></p>
+            <div class="deep-off" id="deepOffRow" hidden>
+              <button class="btn full" id="deepOffBtn">彻底关闭 · 卸载本地模型</button>
+              <p class="tiny" id="deepOffNote"></p>
+            </div>
+            <div id="aiFields">
+              <label>接口类型<select id="aiAdapter"><option value="responses">OpenAI Responses</option><option value="chat-completions">OpenAI-compatible</option></select></label>
+              <label>接口地址<input id="aiBaseUrl" placeholder="https://api.openai.com/v1/responses"></label>
+              <label>模型<input id="aiModel" placeholder="填写服务实际支持的模型 ID"></label>
+              <label>API Key<input id="aiKey" type="password" autocomplete="new-password" placeholder="留空则保留已有 Key"></label>
+              <p class="tiny">「本地」与「外接」各存一套，切换时互不覆盖。「关闭」后不调用任何模型，对话只返回本地日志证据。</p>
+              <p class="tiny">Key 仅发给本机服务并保存在本地配置文件，不进入浏览器存储，也不会在接口响应中返回。</p>
+              <button class="btn primary full" id="aiSave">保存并测试连接</button>
+            </div>
+          </div>
+          <div class="card" data-glass>
+            <div class="panel-title">长期记忆 <span class="badge" id="memoryCount">0</span></div>
+            <form class="memory-add" id="memoryForm"><input id="memoryInput" placeholder="需要长期保留的事实或偏好"><button class="btn" type="submit">记住</button></form>
+            <div id="memoryList" class="memory-list"></div>
+          </div>
+          <div class="card" data-glass>
+            <div class="panel-title">模型简报 <span class="badge" id="briefLen">—</span></div>
+            <p class="tiny">对话时注入给模型的精简摘要（约 1500–2500 字，取代原先 2.8 万字的整库）。模型每次回答后会自己改写它，你也可以在这里直接改。</p>
+            <textarea id="briefText" class="brief-text" placeholder="载入中…"></textarea>
+            <div class="chat-actions" style="margin-top:8px">
+              <span class="sub" id="briefNote"></span>
+              <button class="btn" type="button" id="briefSave">保存简报</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <div class="knob-shell">
+    <i class="tick"></i><i class="tick"></i><i class="tick"></i>
+    <button class="speed-knob" id="speedKnob" data-glass data-radius="22" data-band="12" data-scale="14" aria-label="背景倍速 1x / 2x / 4x">
+      <span class="on"></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="scale-bar" id="scaleBar" role="slider" aria-label="页面滚动刻度条"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+    <div class="track" id="scaleTrack">
+      <div class="thumb" id="scaleThumb"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tp-mask" id="tpMask" hidden>
+  <div class="tp-modal" id="tpModal">
+    <button class="tp-x" id="tpClose" aria-label="关闭">×</button>
+    <div id="tpBody"></div>
+  </div>
+</div>
+
+<div class="modal-mask" id="noteModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="贴一张便签">
+    <div class="modal-h" id="noteModalHead">贴一张便签</div>
+    <label class="modal-lb" for="noteTitle">主题</label>
+    <input id="noteTitle" placeholder="一句话说清这件事">
+    <label class="modal-lb" for="noteBody">内容</label>
+    <textarea id="noteBody" rows="6" placeholder="展开写：背景、要做的事、判断依据…（Ctrl+Enter 贴上）"></textarea>
+    <div class="modal-foot">
+      <span class="sub" id="noteModalHint"></span>
+      <button class="btn" type="button" id="noteCancel">取消</button>
+      <button class="btn primary" type="button" id="noteConfirm">贴上</button>
+    </div>
+  </div>
+</div>
+
+<script src="glass.js?v=9"></script>
+<script src="app.js?v=59"></script>
+</body>
+</html>

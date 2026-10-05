@@ -1,0 +1,46 @@
+{
+  "record_type": "user_confirmed_personal_profile_patch",
+  "version": "1.0",
+  "confirmed_at": "2026-10-03",
+  "identity": {
+    "name": "李东盛",
+    "preferred_aliases": [
+      "Else"
+    ],
+    "birth_date": "2005-02-17",
+    "birth_year": 2005,
+    "major": "计算机科学与技术",
+    "school": "南通大学杏林学院",
+    "academic_stage_as_of_2026-10-03": "大四上",
+    "github_username": "AaronSwartz0217",
+    "personal_website": "https://aaronswartz0217.github.io/Else-Web/introduction.html"
+  },
+  "relationship_timeline": [
+    {
+      "category": "第一段恋情",
+      "period": "小学四年级至大学大一",
+      "person": "许铭杨",
+      "note": "用户本人确认；不要与后续人物合并"
+    },
+    {
+      "category": "喜欢/重要情感对象",
+      "period": "高一至高二",
+      "person": "姚春雨",
+      "alias_in_logs": "526",
+      "note": "不计入第一、第二段恋情编号"
+    },
+    {
+      "category": "白月光",
+      "period": "高二至高三",
+      "person": "祝开欣",
+      "note": "不计入第一、第二段恋情编号"
+    },
+    {
+      "category": "第二段恋情",
+      "period": "2025年11月至2026年6月",
+      "person": "张琰",
+      "note": "用户本人确认"
+    }
+  ],
+  "precedence": "This user-confirmed patch overrides prior inferred identity mappings when they conflict."
+}
