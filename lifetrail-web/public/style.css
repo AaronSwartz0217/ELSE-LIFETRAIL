@@ -5,13 +5,15 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Microsoft YaHei UI","PingFang SC",-apple-system,sans-serif;
   color:var(--t1);background:#000;height:100vh;overflow:hidden}
-/* 背景黑→50% 灰（0 → 0.5 亮度）往返，2 分钟一个完整循环，正常节奏不再加停留。
+/* 背景黑→40% 灰（0 → 0.4 亮度）往返，2 分钟一个完整循环，正常节奏不再加停留。
    放到独立合成层上只动 opacity：直接在 body 上动 background-color 会每帧重绘整页，
    连带当前页所有 backdrop-filter 反复重算，是卡顿的主因。
-   只到 0.5、不到纯白：白底越高越会把页面文字冲淡，0.5 灰是能看清字的极限。 */
+   只到 0.4、不到纯白：白底越高越会把页面文字冲淡。0.5 是之前定的上限，
+   但实测灰字（--t2 #A1A1A6，如「动态数量 · 逐月」这类卡片标题）在峰值时已经发虚，
+   所以压到 0.4。再往上调之前，先在峰值时刻看一眼次级灰字还读不读得出来。 */
 .bg-shift{position:fixed;inset:0;z-index:0;pointer-events:none;background:#FFF;
   opacity:0;will-change:opacity;animation:bgShift 120s ease-in-out infinite}
-@keyframes bgShift{0%,100%{opacity:0}50%{opacity:.5}}
+@keyframes bgShift{0%,100%{opacity:0}50%{opacity:.4}}
 
 .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
   background-image:radial-gradient(rgba(255,255,255,.9) 1px,transparent 1px);
