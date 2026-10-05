@@ -309,6 +309,13 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-05', title: '主题 · 把散落的颜色收成一份变量层，为换肤铺路',
+      items: ['把 style.css / index.html / app.js 三个文件里约 150 处字面色值收敛到 style.css 顶部的 :root 主题变量层，其余一律引用 var()',
+              '白色与黑色覆盖层梯度由 --w / --k 一个基色派生（--w-06 即 rgba(255,255,255,.06)）；换浅色主题时把这两个基色对调，整族描边 / 悬停 / 高光 / 遮罩 / 投影一起翻过来',
+              '文字三阶浓度、黑烟玻璃底、图表与转折点的语义色各成一组；语义色的透明版本用对应的 --c-*-rgb 基色派生',
+              '外观逐位保持不变：每个变量的值与原字面值完全相同，只是换了引用方式',
+              'canvas 粒子那处因 canvas 不支持 var()，颜色仍是写死值（已加注释说明），其余 SVG 内联颜色照常换成了 var()',
+              '改动：public/style.css（新增 :root 主题层，正文全部改为 var()）、public/index.html（内联颜色 + 版本号）、public/app.js（SVG 常量与模板、changelog）'] },
     { date: '2026-10-05', title: '白板 · 便签拖到哪就插到哪，后面的自动往下让位',
       items: ['原来落点只有两种：塞进目标列的末尾。想把一张便签挪到列中段，得先把上面的全搬走，很死板',
               '现在拖动时会跟着算「光标夹在哪两张便签之间」，并在那道缝上放一块与被拖便签等高的虚线占位块，后面的便签立刻往下让开；松手就落在那儿',
@@ -556,9 +563,9 @@ const DEMO = {
 const esc = s => String(s).replace(/[&<>"]/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-const C_LOG = 'rgba(255,255,255,.38)', C_ACT = '#8FA3BF', C_JDG = '#B39A7D',
-      C_NOW = '#D8B47A', C_TXT = '#6E6E73', C_GRID = 'rgba(255,255,255,.07)';
-const C_TP_RED = '#E5484D';   // 转折点竖线（红·细线，画在阶段页逐月图上）
+const C_LOG = 'var(--w-38)', C_ACT = 'var(--c-blue)', C_JDG = 'var(--c-brown)',
+      C_NOW = 'var(--c-gold)', C_TXT = 'var(--t3)', C_GRID = 'var(--w-07)';
+const C_TP_RED = 'var(--c-red)';   // 转折点竖线（红·细线，画在阶段页逐月图上）
 
 /* ---- 年度刻度尺 ----
  * 一年一格。months 只是离线兜底：联网后由 applyLogMonths() 用 /api/stats 的
@@ -732,28 +739,28 @@ function renderYearRuler(container, data) {
 
   let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
   s += `<line x1="${padL}" y1="${base}" x2="${W - padR}" y2="${base}"
-          stroke="rgba(255,255,255,.22)"/>`;
+          stroke="var(--w-22)"/>`;
 
   data.forEach((d, i) => {
     const total = yearTotal(d);
     const cx = padL + seg * i + seg / 2;
     const sel = d.y === SELECTED_YEAR;
-    const col = total ? (sel ? C_NOW : 'rgba(143,163,191,.7)') : 'rgba(255,255,255,.16)';
+    const col = total ? (sel ? C_NOW : 'rgba(var(--c-blue-rgb),.7)') : 'var(--w-16)';
     const h = total ? 18 + (total / max) * 72 : 7;
 
     for (let k = 1; k <= 3; k++) {   // 四分之一细刻度
       const xq = padL + seg * i + seg * k / 4;
       s += `<line x1="${xq}" y1="${base}" x2="${xq}" y2="${base - 5}"
-              stroke="rgba(255,255,255,.10)"/>`;
+              stroke="var(--w-10)"/>`;
     }
     s += `<line x1="${cx}" y1="${base}" x2="${cx}" y2="${base - h}" stroke="${col}"
             stroke-width="${sel ? 2.4 : 1.6}"${total ? '' : ' stroke-dasharray="2 3"'}/>`;
     if (total)
       s += `<circle cx="${cx}" cy="${base - h}" r="${sel ? 3.6 : 2.6}" fill="${col}"/>`;
     s += `<text x="${cx}" y="${H - 28}" font-size="12" text-anchor="middle"
-            fill="${sel ? '#F5F5F7' : (total ? '#A1A1A6' : '#6E6E73')}">${d.y}</text>` +
+            fill="${sel ? 'var(--t1)' : (total ? 'var(--t2)' : 'var(--t3)')}">${d.y}</text>` +
          `<text x="${cx}" y="${H - 11}" font-size="10" text-anchor="middle"
-            fill="#6E6E73">${total ? total + ' 篇' : '无记录'}</text>`;
+            fill="var(--t3)">${total ? total + ' 篇' : '无记录'}</text>`;
     s += `<rect x="${padL + seg * i}" y="0" width="${seg}" height="${H}"
             class="yr-hit" data-y="${d.y}"/>`;
   });
@@ -846,11 +853,11 @@ function renderBarChart(container, monthly) {
     const x0 = MONTH_SLOT * i;
     let n = 1;
     while (n < 12 && months[i + n] && months[i + n].slice(0, 4) === yy) n++;
-    s += `<line x1="${x0}" y1="${BAR_PAD_T}" x2="${x0}" y2="${base}" stroke="rgba(255,255,255,.07)"/>` +
-         `<text x="${x0 + MONTH_SLOT * n / 2}" y="${BAR_H - 5}" font-size="10" fill="#A1A1A6"
+    s += `<line x1="${x0}" y1="${BAR_PAD_T}" x2="${x0}" y2="${base}" stroke="var(--w-07)"/>` +
+         `<text x="${x0 + MONTH_SLOT * n / 2}" y="${BAR_H - 5}" font-size="10" fill="var(--t2)"
             text-anchor="middle">${yy}</text>`;
   });
-  s += `<line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="rgba(255,255,255,.22)"/>`;
+  s += `<line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="var(--w-22)"/>`;
   months.forEach((m, i) => {
     const cx = MONTH_SLOT * i + MONTH_SLOT / 2;
     const g = [
@@ -890,7 +897,7 @@ function renderLineChart(container, snaps, legendEl, maxV = 3, yPrefix = 'L') {
     return;
   }
   if (legendEl) {
-    const colors = ['#F5F5F7', C_ACT, C_JDG, '#7FA08A'];
+    const colors = ['var(--t1)', C_ACT, C_JDG, 'var(--c-sage)'];
     const dims = Object.keys(snaps[0]?.scores || {});
     legendEl.innerHTML = dims.map((d, i) =>
       `<span><i style="background:${colors[i % 4]}"></i>${esc(d)}</span>`).join('');
@@ -908,7 +915,7 @@ function renderLineChart(container, snaps, legendEl, maxV = 3, yPrefix = 'L') {
          `<text x="${padL - 6}" y="${y(vv) + 3}" font-size="9" fill="${C_TXT}" text-anchor="end">${yPrefix}${vv}</text>`;
   }
   const dims = Object.keys(snaps[0]?.scores || {});
-  const colors = ['#F5F5F7', C_ACT, C_JDG, '#7FA08A'];
+  const colors = ['var(--t1)', C_ACT, C_JDG, 'var(--c-sage)'];
   dims.forEach((d, di) => {
     const pts = snaps.map((sn, i) => [x(i), y(sn.scores[d] || 0)]);
     const path = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
@@ -941,8 +948,8 @@ function renderStateBasis(snaps) {
     <div class="k" style="margin-top:2px">${esc(t.basis || '')}</div></li>`).join('');
   const chips = (m.timeline || []).map(t =>
     `<span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;
-       border:1px solid rgba(245,245,247,.18);border-radius:999px;font-size:11px;color:#A1A1A6">
-       ${esc(t.at)}<b style="color:#F5F5F7;font-weight:600">${esc(t.short || t.type)}</b></span>`).join('');
+       border:1px solid var(--line-t1);border-radius:999px;font-size:11px;color:var(--t2)">
+       ${esc(t.at)}<b style="color:var(--t1);font-weight:600">${esc(t.short || t.type)}</b></span>`).join('');
   el.innerHTML =
     `<div style="margin-top:10px;display:flex;align-items:center;gap:10px">
        <span>MBTI：<b>${esc(m.type)}</b></span>
@@ -980,11 +987,11 @@ const ringSVG = (pct, color) => {
   const r = 46, c = 2 * Math.PI * r;
   const off = c * (1 - Math.max(0, Math.min(100, pct)) / 100);
   return `<svg viewBox="0 0 120 120" width="128" height="128">
-    <circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="10"/>
+    <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--w-10)" stroke-width="10"/>
     <circle cx="60" cy="60" r="${r}" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round"
       stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" transform="rotate(-90 60 60)"/>
     <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
-      fill="#F5F5F7" font-size="27" font-weight="600">${pct}%</text></svg>`;
+      fill="var(--t1)" font-size="27" font-weight="600">${pct}%</text></svg>`;
 };
 const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
@@ -1053,7 +1060,7 @@ async function loadStats() {
       ({ taken_at: x.taken_at, scores: typeof x.scores === 'string' ? JSON.parse(x.scores) : x.scores }));
   } catch { snaps = DEMO.snapshots; }
   const st = stateRing(snaps);
-  $('#ringState').innerHTML = st ? ringSVG(st.pct, '#8FA3BF') : '—';
+  $('#ringState').innerHTML = st ? ringSVG(st.pct, 'var(--c-blue)') : '—';
   $('#ringStateNote').innerHTML = st
     ? `最近快照 ${esc(st.at)} · 四象限均值 ${st.avg.toFixed(2)} / 3（L0–L3 折算）<br>${esc(st.detail)}`
     : '暂无四象限快照。';
@@ -1061,7 +1068,7 @@ async function loadStats() {
   // 圆表 · 稳定度：日志分 50% + 当前行为完成度 50%
   const lg = logScore(await fetchLogs());
   const stable = Math.round((lg.pct + TASK_DONE) / 2);
-  $('#ringStable').innerHTML = ringSVG(stable, '#D8B47A');
+  $('#ringStable').innerHTML = ringSVG(stable, 'var(--c-gold)');
   $('#ringStableNote').innerHTML =
     `日志 ${lg.pct}%：近 ${lg.weeks} 周 ${lg.n} 篇 · 每周 ${lg.perWeek.toFixed(2)} / ${lg.target} 篇（达标线）<br>` +
     `行为完成度 ${TASK_DONE}%：每日问答的完成情况<br>` +
@@ -1729,11 +1736,11 @@ function revRing(score, size = 124) {
   const r = 52, C2 = 2 * Math.PI * r;
   const off = C2 * (1 - Math.max(0, Math.min(10, score)) / 10);
   return `<svg class="rev-ring" viewBox="0 0 124 124" width="${size}" height="${size}">
-    <circle cx="62" cy="62" r="${r}" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="6"/>
-    <circle cx="62" cy="62" r="${r}" fill="none" stroke="#D8B47A" stroke-width="6" stroke-linecap="round"
+    <circle cx="62" cy="62" r="${r}" fill="none" stroke="var(--w-10)" stroke-width="6"/>
+    <circle cx="62" cy="62" r="${r}" fill="none" stroke="var(--c-gold)" stroke-width="6" stroke-linecap="round"
       stroke-dasharray="${C2.toFixed(1)}" style="--off:${off.toFixed(1)}"
       transform="rotate(-90 62 62)" class="rev-ring-arc"/>
-    <text x="62" y="69" text-anchor="middle" font-size="26" font-weight="600" fill="#F5F5F7">${score.toFixed(1)}</text>
+    <text x="62" y="69" text-anchor="middle" font-size="26" font-weight="600" fill="var(--t1)">${score.toFixed(1)}</text>
   </svg>`;
 }
 
@@ -1859,6 +1866,7 @@ function startRevParticles() {
   function draw() {
     ctx.clearRect(0, 0, c.width, H);
     for (const p of parts) {
+      // canvas 不吃 var()，这里的颜色只能写死（上游 col 同理）
       const col = p.h < .55 ? '143,163,191' : (p.h < .86 ? '216,180,122' : '245,245,247');
       ctx.beginPath();
       ctx.fillStyle = `rgba(${col},${p.a})`;
