@@ -464,13 +464,20 @@ select{background:rgba(255,255,255,.06);border:1px solid var(--line);
   transition:transform .18s,box-shadow .18s,opacity .18s}
 /* 拖动期间临时禁选：只在这一刻生效，松手即恢复，便签正文平时照样能选中复制 */
 body.dragging,body.dragging .note,body.dragging .note *{user-select:none;-webkit-user-select:none}
-.wall-col .note:nth-child(odd){transform:rotate(-1.1deg)}
-.wall-col .note:nth-child(even){transform:rotate(1deg)}
+/* 用 nth-of-type 而不是 nth-child：拖拽插入的 .note-ghost 是 div，
+   按 nth-child 算会把它数进去，后面的便签会在拖动过程中来回翻倾角 */
+.wall-col .note:nth-of-type(odd){transform:rotate(-1.1deg)}
+.wall-col .note:nth-of-type(even){transform:rotate(1deg)}
 .wall .note:hover{transform:rotate(0) translateY(-2px);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 14px 32px rgba(0,0,0,.34)}
 .wall .note.dragging{position:fixed;z-index:60;cursor:grabbing;pointer-events:none;
   transform:rotate(2.2deg) scale(1.03);opacity:.95;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 22px 48px rgba(0,0,0,.5)}
+/* 拖拽时插在落点上的占位块：与被拖便签等高，撑开一段空位，
+   后面的便签就自动往下让——松手便签落在这儿 */
+.note-ghost{border-radius:14px;border:1px dashed rgba(255,255,255,.24);
+  background:rgba(255,255,255,.03);pointer-events:none;animation:ghostIn .15s ease}
+@keyframes ghostIn{from{opacity:0;transform:scaleY(.92)}to{opacity:1;transform:none}}
 .note.done{opacity:.45}
 .note.done .note-t{text-decoration:line-through}
 /* 刚贴上的便签闪一下：它落在列底部、常在视口外，不闪一下会像「点了没反应」 */

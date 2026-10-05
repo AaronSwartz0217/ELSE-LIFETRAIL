@@ -309,6 +309,13 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-05', title: '白板 · 便签拖到哪就插到哪，后面的自动往下让位',
+      items: ['原来落点只有两种：塞进目标列的末尾。想把一张便签挪到列中段，得先把上面的全搬走，很死板',
+              '现在拖动时会跟着算「光标夹在哪两张便签之间」，并在那道缝上放一块与被拖便签等高的虚线占位块，后面的便签立刻往下让开；松手就落在那儿',
+              '列内排序与跨列移动是同一条逻辑，落点由占位块实时显示，所见即所得；松手时光标若已滑出白板，就按占位块最后停的位置算',
+              '悬在「删除 / 重命名·编辑」两个拖放区上时收起占位块，免得「扔不扔」和「插在哪」两个提示同时出现；删除区 / 编辑区的行为没变',
+              '侧栏导航第 6 项由「计划白板」改名为「白板」',
+              '改动：public/app.js（planBind 的 dropSpot / placeGhost / 落点插入）、public/style.css（.note-ghost；倾角规则改用 nth-of-type，避免占位块来回改动奇偶）、public/index.html（导航文案、版本号）'] },
     { date: '2026-10-05', title: '背景 · 峰值亮度从 0.5 压到 0.4，保住灰字的可读性',
       items: ['背景那层白烟（.bg-shift）在黑↔灰之间呼吸，峰值原来到 0.5 亮度；峰值时次级灰字（--t2 #A1A1A6，如卡片标题「动态数量 · 逐月」）会被冲淡到发虚',
               '峰值下调 0.1：@keyframes bgShift 的 50%{opacity:.5} 改成 .4，循环时长与节奏不变',
@@ -2053,9 +2060,34 @@ function planBind() {
     if (item && item.points && item.points.length) { BOARD_OPEN[id] = !BOARD_OPEN[id]; renderWall(); }
   });
 
-  // 拖拽换列。点与拖共用 pointer：位移超过 4px 才升级为拖拽，
+  // 拖拽：换列 + 列内插位。点与拖共用 pointer：位移超过 4px 才升级为拖拽，
   // 拖过之后置 PLAN_DRAGGED，让随后补发的 click 不再误触「展开」。
+  // 落点不是「塞到列尾」，而是光标当前夹在哪两张便签之间就插哪：
+  // 靠一个与被拖便签等高的占位块把位置撑开，后面的便签自动往下让。
   let drag = null;
+
+  /* 光标落在哪一列的哪道缝上：{ col, idx, colEl }；不在任何列上返回 null。
+     idx = 该列里「中线在光标上方」的便签数。
+     被拖的那张已脱离文档流（position:fixed），本来就不该参与比较。 */
+  function dropSpot(x, y, skip) {
+    const colEl = document.elementFromPoint(x, y)?.closest('.wall-col');
+    if (!colEl) return null;
+    const kids = [...colEl.querySelectorAll(':scope > .note')].filter(el => el !== skip);
+    const idx = kids.filter(el => {
+      const r = el.getBoundingClientRect();
+      return y > r.top + r.height / 2;
+    }).length;
+    return { col: Number(colEl.dataset.col), idx, colEl };
+  }
+
+  /* 占位块挪到目标缝上；目标是 null（悬在删除 / 编辑区上）就先收起来 */
+  function placeGhost(spot) {
+    const g = drag.ghost; if (!g) return;
+    if (!spot) { if (g.parentNode) g.remove(); return; }
+    const kids = [...spot.colEl.querySelectorAll(':scope > .note')].filter(el => el !== drag.el);
+    spot.colEl.insertBefore(g, kids[spot.idx] || null);
+  }
+
   const onMove = e => {
     if (!drag) return;
     if (!drag.moved) {
@@ -2066,18 +2098,24 @@ function planBind() {
       drag.oy = drag.sy - r.top;
       drag.el.classList.add('dragging');
       drag.el.style.width = r.width + 'px';
+      // 占位块撑出被拖便签那么高的一段空位，别的便签就会自己让开
+      drag.ghost = document.createElement('div');
+      drag.ghost.className = 'note-ghost';
+      drag.ghost.style.height = r.height + 'px';
       armDropZones(true);
     }
     drag.el.style.left = (e.clientX - drag.ox) + 'px';
     drag.el.style.top = (e.clientY - drag.oy) + 'px';
     const zone = dropZoneAt(e.clientX, e.clientY);
     highlightDropZone(zone);
-    const col = zone ? null : document.elementFromPoint(e.clientX, e.clientY)?.closest('.wall-col');
-    document.querySelectorAll('.wall-col').forEach(c => c.classList.toggle('over', c === col));
+    // 悬在删除 / 编辑区上时先收起占位块，免得「扔不扔」和「插在哪」两个提示打架
+    const spot = zone ? null : dropSpot(e.clientX, e.clientY, drag.el);
+    if (spot || zone) { placeGhost(spot); drag.spot = spot; }
+    document.querySelectorAll('.wall-col').forEach(c => c.classList.toggle('over', !!spot && c === spot.colEl));
   };
   const onUp = e => {
     if (!drag) return;
-    const { id, moved } = drag;
+    const { id, moved, ghost, spot } = drag;
     drag = null;
     document.removeEventListener('pointermove', onMove);
     document.removeEventListener('pointerup', onUp);
@@ -2086,16 +2124,20 @@ function planBind() {
     document.querySelectorAll('.wall-col').forEach(c => c.classList.remove('over'));
     if (!moved) return;
     PLAN_DRAGGED = true;
+    if (ghost && ghost.parentNode) ghost.remove();
     const zone = dropZoneAt(e.clientX, e.clientY);
-    if (zone) {                                     // 落到区域上：删除 / 编辑，不再换列
+    if (zone) {                                     // 落到区域上：删除 / 编辑，不再改位置
       renderWall();                                 // 先把被拖起来的样式清掉，再执行动作
       if (zone.id === 'dropDel') deleteNote(id); else openNoteModal(id);
       return;
     }
-    const col = document.elementFromPoint(e.clientX, e.clientY)?.closest('.wall-col');
-    const to = col ? Number(col.dataset.col) : -1;
-    BOARD.cols = BOARD.cols.map(c => c.filter(x => x !== id));
-    BOARD.cols[Number.isInteger(to) && BOARD.cols[to] ? to : 0].push(id);
+    // 插入占位块停的那道缝（松手时光标若已滑出白板，就认它最后一次停的位置）；
+    // 光标自始至终没进过白板，则退回「追加到第一列末尾」的老行为。
+    const cols = BOARD.cols.map(c => c.filter(x => x !== id));
+    const ci = spot && Number.isInteger(spot.col) && cols[spot.col] ? spot.col : 0;
+    const idx = spot ? Math.max(0, Math.min(spot.idx, cols[ci].length)) : cols[ci].length;
+    cols[ci].splice(idx, 0, id);
+    BOARD.cols = cols;
     renderWall(); saveBoard();
   };
   wall.addEventListener('pointerdown', e => {
