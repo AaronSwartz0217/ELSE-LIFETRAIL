@@ -170,6 +170,13 @@ function buildStats() {
   });
   return {
     logs: LOGS.length,
+    // 逐月篇数（"YYYY-MM" → 条数）：年度刻度尺与阶段页逐月图的唯一来源。
+    // 放在服务端算，前端就不必再维护一份会随日志增长失真的清点值。
+    byMonth: LOGS.reduce((m, log) => {
+      const k = String(log.date || '').slice(0, 7);
+      if (/^\d{4}-\d{2}$/.test(k)) m[k] = (m[k] || 0) + 1;
+      return m;
+    }, {}),
     actions: { total: rec.actions.length, done },
     // 判断只统计「样本数」：已填「实际结果」的条数。结果对错属 AI 推断，不算命中率。
     judgments: { total: rec.judgments.length,

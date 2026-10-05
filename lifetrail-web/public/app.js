@@ -309,6 +309,13 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-05', title: '时间轴 · 逐月篇数改成活数据，修掉年份尺 52 / 实际 55 的偏差',
+      items: ['年度刻度尺的逐年篇数原先写死在 app.js 的 YEARS.months 里（清点自 153 篇时代），日志涨到 156 后没跟着动：2026 年显示 52，实际 55，全尺合计 153',
+              '后端 /api/stats 新增 byMonth（"YYYY-MM" → 条数），由服务端直接从索引算；前端 applyLogMonths() 用它覆写 YEARS.months，并重建逐月横轴与 LOG_BY_MONTH',
+              '受影响的两处一起变活：时间轴年度刻度尺、阶段页「动态数量 · 逐月」的日志序列；离线时仍回退到写死值兜底',
+              'YEARS 里的 events / summary 是判断不是算术，仍留在代码里人工维护；2026 年 summary 里那句「52 篇」同步订正为 55',
+              '为避免点得太快画到旧值，loadTimeline / loadStages 先 await STATS_READY 再渲染',
+              '改动：server.js（buildStats 加 byMonth）、public/app.js（applyLogMonths / STATS_READY / 注释）、public/index.html（版本号）'] },
     { date: '2026-10-05', title: '全站 · 日志篇数统一取真实值，不再各处写死',
       items: ['总览「日志底图」、时间轴/阶段/评价页的说明文字、评价页的评级口径与「证据」里的篇数，统一由 /api/stats 的实际日志数驱动，导入新日志后一起同步',
               '实现：app.js 新增全局 LOG_COUNT 与 applyLogCount()，loadStats() 拿到真实篇数后刷新所有 [data-lognum] 占位；评价页的评分口径、事实条与出处改用 {n} 占位并在渲染时替换',
@@ -537,8 +544,8 @@ const C_LOG = 'rgba(255,255,255,.38)', C_ACT = '#8FA3BF', C_JDG = '#B39A7D',
 const C_TP_RED = '#E5484D';   // 转折点竖线（红·细线，画在阶段页逐月图上）
 
 /* ---- 年度刻度尺 ----
- * 一年一格；months 由磁盘 153 篇日志逐月清点得出。
- * events / summary 重新对照全部 TXT、评论、已有 OCR 与本地图片核验；
+ * 一年一格。months 只是离线兜底：联网后由 applyLogMonths() 用 /api/stats 的
+ * byMonth 覆写，不需要手工维护。events / summary 是判断，必须人工核验后手改；
  * 2018、2019 没有记录，因此只说明数据空白，不推断当年状态。 */
 const YEARS = [
   { y: 2016, months: [0,0,0,0,0,0,0,0,1,0,0,0],
@@ -591,12 +598,15 @@ const YEARS = [
              '07-26《长期主义》：把长期主义定义为波动后的恢复、调整与重建秩序',
              '08—09 月：家庭事件、旧关系回看、从“真恶”到“水映万象”的判断方式修正',
              '10-01《本质》《human3.0建议》：识别“用挑战回避判断”，把职业问题聚焦到选择、拒绝与市场验证'],
-    summary: '截至 10 月共有 52 篇，其中 6 月 27 篇，是全语料最密集的一年。变化可分五段：先确认探索与自我珍视；关系危机后用 AI 对话和 Skill 文档外化内在审判；随后被面试与考试拉回具体能力；再把长期主义改写为可恢复的节奏；最后把“强行得出答案”修正为容纳复杂性，并把职业困境命名为“用挑战回避判断”。需要保留两条边界：大量 6 月文本是 AI 回答转存，不等于诊断；10 月 60 天计划是待验证方案，不是已完成成果。' }
+    summary: '截至 10 月共有 55 篇，其中 6 月 27 篇，是全语料最密集的一年。变化可分五段：先确认探索与自我珍视；关系危机后用 AI 对话和 Skill 文档外化内在审判；随后被面试与考试拉回具体能力；再把长期主义改写为可恢复的节奏；最后把“强行得出答案”修正为容纳复杂性，并把职业困境命名为“用挑战回避判断”。需要保留两条边界：大量 6 月文本是 AI 回答转存，不等于诊断；10 月 60 天计划是待验证方案，不是已完成成果。' }
 ];
 
-/* 逐月横轴：从语料第一年（2016）逐月铺到最后一个有记录的月份，
-   供阶段页柱状图横向滚动查看；logs 逐月篇数直接取自 YEARS（磁盘清点值）。 */
-const MONTH_AXIS = (() => {
+/* 逐月横轴与逐月篇数：从语料第一年（2016）逐月铺到最后一个有记录的月份，
+   供年度刻度尺与阶段页柱状图使用。
+   下面这份是从 YEARS 算出的**兜底值**；联网后 applyLogMonths() 会用服务端的
+   实际清点覆写掉它——否则这份写死值会随日志增长慢慢失真（曾出现年份尺显示 52、
+   实际 55 的偏差）。注意只覆写 months，events / summary 是判断，保持原样。 */
+let MONTH_AXIS = (() => {
   const out = [];
   let last = 0;
   YEARS.forEach(d => {
@@ -605,10 +615,30 @@ const MONTH_AXIS = (() => {
   });
   return out.slice(0, last + 1);
 })();
-const LOG_BY_MONTH = {};
+let LOG_BY_MONTH = {};
 YEARS.forEach(d => d.months.forEach((c, i) => {
   LOG_BY_MONTH[`${d.y}-${String(i + 1).padStart(2, '0')}`] = c;
 }));
+
+/* 用服务端的逐月清点（/api/stats 的 byMonth）覆写 YEARS.months 并重建上面两项。
+   没有 byMonth（离线 / 服务未起）就保持写死值兜底。 */
+function applyLogMonths(byMonth) {
+  if (!byMonth) return;
+  YEARS.forEach(d => {
+    d.months = Array.from({ length: 12 }, (_, i) =>
+      byMonth[`${d.y}-${String(i + 1).padStart(2, '0')}`] || 0);
+  });
+  LOG_BY_MONTH = {}; MONTH_AXIS = [];
+  let last = 0;
+  YEARS.forEach(d => {
+    d.months.forEach((c, i) => {
+      LOG_BY_MONTH[`${d.y}-${String(i + 1).padStart(2, '0')}`] = c;
+      if (c) last = MONTH_AXIS.length + i;
+    });
+    for (let m = 1; m <= 12; m++) MONTH_AXIS.push(`${d.y}-${String(m).padStart(2, '0')}`);
+  });
+  MONTH_AXIS = MONTH_AXIS.slice(0, last + 1);
+}
 
 const YEAR_INSIGHTS = {
   2016: { focus: '载体试探', shift: '第一次把问题留在日志里。', open: '样本过少，只能确认记录行为。' },
@@ -970,6 +1000,7 @@ async function loadStats() {
     if (h && typeof h.logs === 'number') s = { ...s, logs: h.logs };
   } catch {}
   applyLogCount(s.logs);                    // 刷新全站所有日志篇数文案
+  applyLogMonths(s.byMonth);                // 用真实逐月清点覆写年度刻度尺与阶段页序列
   $('#stLogs').textContent = s.logs || '—';
   $('#stAct').textContent = s.actions.total
     ? Math.round(s.actions.done * 100 / s.actions.total) + '%' : '—';
@@ -1028,6 +1059,8 @@ async function fetchLogs() {
 }
 
 async function loadTimeline() {
+  // 先等 stats 回来，确保 YEARS.months 已被真实清点覆写（见 applyLogMonths）
+  await STATS_READY;
   // 年度刻度尺：一年一格，顶部金色轨道为转折点，点击查看大事件与年度总结
   renderYearRuler($('#yearRuler'), YEARS);
   renderYearDetail(SELECTED_YEAR);
@@ -1127,6 +1160,7 @@ $('#btnImport').onclick = async () => {
 
 /* ---- 阶段 ---- */
 async function loadStages() {
+  await STATS_READY;                        // 逐月序列同样依赖真实清点（见 applyLogMonths）
   let list;
   try { list = await api('/api/stages'); } catch { markOffline(); list = DEMO.stages; }
 
@@ -1587,7 +1621,9 @@ $('#nav').addEventListener('click', e => {
 });
 
 /* ---- 启动 ---- */
-loadStats();
+/* 页面是点开才渲染的，若在 stats 回来之前先点了时间轴 / 阶段，
+   会画到上面那份写死的兜底清点值。存下这个 promise，两个 loader 先 await 它。 */
+const STATS_READY = loadStats();
 setTimeout(updateScrollArrows, 120);
 
 /* ============================================================
