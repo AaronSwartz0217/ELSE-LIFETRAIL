@@ -1,8 +1,8 @@
-# 活密钥与运行时状态：不入库
+# 活密钥：不入库
 # 不是隐私考虑——auth-token 与接口 Key 被扫到就是实打实的损失
+# auth-token.txt 由 server.js 启动时自动生成，所以不入库也不影响新设备跑起来
 lifetrail-web/data/auth-token.txt
 lifetrail-web/data/ai-config.local.json
-lifetrail-web/data/chat-state.json
 
 # 系统与临时文件
 *.tmp
