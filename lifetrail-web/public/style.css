@@ -100,6 +100,86 @@
   --c-danger-line:rgba(255,130,130,.55);
   --c-danger-on:#FFD8D8;
 }
+
+/* ==================== 主题层 · 天光（正常玻璃 + 云海背景） ====================
+   :root 是默认「黑烟玻璃」主题；这里另开一组参数作为换肤用，
+   由右上角倍速旋钮的第 4 档开启（切换方式：给 <html> 加 data-theme="sky"）。
+   这一版是「正常玻璃」：比黑烟玻璃更中性、更透，字色提亮一档，
+   背景交给 sky.js 的云海着色器。
+   注：期间试过整版翻白（透亮浅色玻璃 + 深色字），亮底上偏白压不住信息，
+   已按本人反馈退回这版深色玻璃。 */
+html[data-theme="sky"]{
+  /* 正常玻璃：中性冷调、比黑烟玻璃更透，天光透得过来 */
+  --glass:rgba(44,48,56,.46);
+  --glass-side:rgba(40,44,52,.48);
+  --glass-deep:rgba(60,64,74,.56);
+  --glass-deep-hover:rgba(60,64,74,.54);
+  --panel:rgba(26,28,34,.9);
+  --blur:blur(32px) saturate(1.7);
+
+  /* 文字：深玻璃上用亮色三阶，比 :root 再提亮约 0.3 */
+  --t1:#FFFFFF;   /* 主：标题、正文 */
+  --t2:#C9C9CE;   /* 次：卡片标题、说明 */
+  --t3:#949499;   /* 弱：标签、脚注、占位符 */
+  --line-t1:rgba(255,255,255,.26);
+
+  /* 兜底深色：拿不到 WebGL 时是深底亮字；
+     呼吸白烟会冲淡云海，关掉（点阵纹理同理，见下） */
+  --bg:#0E141C;
+  --smoke:transparent;
+
+  /* 覆盖层基色回到白：描边 / 悬停 / 高光与深玻璃一致 */
+  --w:255,255,255;
+
+  /* 语义色沿用 :root 的亮色原值，保持同一套信息编码、只换底色 */
+  --c-gold:#D8B47A;
+  --c-red:#E5484D;
+  --c-orange:#EE9A3A;
+  --c-blue:#8FA3BF;
+  --c-brown:#B39A7D;
+  --c-green:#91B79F;
+  --c-sage:#7FA08A;
+  --c-warn:#B48E5A;
+  --c-muted-brown:#A7927B;
+  --c-on-gold:#0E0E12;
+  --c-gold-rgb:216,180,122;
+  --c-red-rgb:229,72,77;
+  --c-orange-rgb:238,154,58;
+  --c-blue-rgb:143,163,191;
+  --c-green-rgb:145,183,159;
+}
+/* 边缘的半透磨砂：玻璃中心保持通透，越靠边越泛起一层乳白（像是磨砂玻璃的磨边），
+   再压一道顶部的微光。用 background-image 叠在 --glass 底色上，画在文字之下，
+   不遮内容；.tp-row / .speed-knob 等在悬停时改的是 background 底色，
+   这里的选择器多一层 html[...] 优先级更高，磨砂边不会被 hover 覆盖掉。
+   最上一层是「阳光照到上沿」：一道 3px 的暖色高光（跟云海着色器里的太阳一样在上方），
+   只有一点点，别让人看出是描边 —— 想更弱/更强就调第一层的 alpha 与 3px 那个厚度。 */
+html[data-theme="sky"] .sidebar,
+html[data-theme="sky"] .card,
+html[data-theme="sky"] .speed-knob,
+html[data-theme="sky"] .tp-row,
+html[data-theme="sky"] .rev-crit,
+html[data-theme="sky"] .modal,
+html[data-theme="sky"] .board-bar{
+  background-image:
+    /* 阳光照到的上沿：暖色细高光，太阳偏在上方，所以只压上边 */
+    linear-gradient(180deg, rgba(255,208,150,.28) 0, rgba(255,208,150,0) 3px),
+    /* 磨边：中心透、越靠边越乳白 */
+    radial-gradient(135% 135% at 50% 50%,
+      rgba(255,255,255,0) 58%,
+      rgba(255,255,255,.06) 80%,
+      rgba(255,255,255,.14) 100%),
+    /* 顶部微光 */
+    linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 22%);
+}
+
+/* 天光画布：固定铺满，待在 .layout 之下，被卡片玻璃当作背景折射 */
+.sky-canvas{position:fixed;inset:0;z-index:0;width:100%;height:100%;
+  pointer-events:none;opacity:0;visibility:hidden;transition:opacity .9s ease}
+html[data-theme="sky"] .sky-canvas{opacity:1;visibility:visible}
+/* 天光主题下点阵纹理在亮背景上显脏，隐去 */
+html[data-theme="sky"] .grid-bg{opacity:0}
+
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Microsoft YaHei UI","PingFang SC",-apple-system,sans-serif;
   color:var(--t1);background:var(--bg);height:100vh;overflow:hidden}
@@ -249,6 +329,9 @@ select{background:var(--w-06);border:1px solid var(--line);
 .speed-knob span:nth-child(2){width:18px}
 .speed-knob span:nth-child(3){width:24px}
 .speed-knob span.on{background:var(--w-85)}
+/* 第 4 档（天光主题）：三条横线全亮之外，内圈加一道虚线环作区分，仍是单色不抢眼 */
+.speed-knob.theme::after{content:'';position:absolute;inset:6px;border-radius:50%;
+  border:1px dashed var(--w-45);pointer-events:none}
 .yr-hit{fill:transparent;cursor:pointer;transition:fill .15s}
 .yr-hit:hover{fill:var(--w-045)}
 .legend{display:flex;gap:18px;align-items:center;margin:12px 2px 4px;font-size:11px;color:var(--t2);flex-wrap:wrap}
@@ -592,8 +675,6 @@ body.dragging,body.dragging .note,body.dragging .note *{user-select:none;-webkit
   text-align:center;line-height:15px;transition:.18s}
 .note-check:hover{border-color:var(--w-50)}
 .note.done .note-check{background:var(--w-20);border-color:transparent}
-.note-x{all:unset;cursor:pointer;flex-shrink:0;color:var(--t3);font-size:15px;line-height:1;padding:0 2px}
-.note-x:hover{color:var(--t1)}
 .note-b{font-size:12px;color:var(--t2);line-height:1.8;margin-top:8px;white-space:pre-line}
 .note-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .note-tag{font-size:10px;color:var(--t3);border:1px solid var(--line);

@@ -309,6 +309,21 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-06', title: '白板 · 去掉便签右上角的「×」',
+      items: ['便签右上角的删除按钮（.note-x）移除：那个位置太容易误点；删除便签仍可拖到「删除」拖放区完成',
+              '改动：public/app.js（planNoteHtml 去掉按钮、planBind 去掉 del 分支）、public/style.css（移除 .note-x 样式）、public/index.html（版本号）'] },
+    { date: '2026-10-05', title: '主题 · 新增「天光」换肤：正常玻璃 + 云海背景',
+      items: ['主题参数层建好后，这一版真正用它做换肤：在 style.css 的 :root 之外并排另开一组 html[data-theme="sky"]',
+              '玻璃用「正常玻璃」：中性冷调、比黑烟玻璃更透（--glass rgba(44,48,56,.46)、--panel 深色近实），模糊提到 blur(32px) saturate(1.7)，背后的天与水透得过来；呼吸白烟 --smoke 关掉、点阵纹理隐去（否则会冲淡云海）',
+              '文字提亮一档（比 :root 约 +0.3）：--t1 #FFFFFF / --t2 #C9C9CE / --t3 #949499',
+              '覆盖层基色 --w 继续走白（描边/悬停/高光与深玻璃一致）；语义色沿用 :root 的亮色原值，保持同一套信息编码、只换底色',
+              '注：期间试过把整套翻成「透亮白玻璃 + 深色字」的浅色版，亮底上偏白压不住信息，已按本人反馈退回深色玻璃这一版',
+              '边缘的半透磨砂：给 .sidebar/.card/.speed-knob/.tp-row/.rev-crit/.modal/.board-bar 叠一层「中心透、越靠边越乳白」的径向磨砂渐变 + 顶部微光（background-image，画在文字之下不遮内容），做出磨砂玻璃的磨边变化',
+              '边缘被阳光照：在磨边的 background-image 最上面再加一道 3px 的暖色上沿高光（rgba(255,208,150,.28)），跟云海着色器里的太阳同在上方，只压上边、只有一点点',
+              '背景用 Frank Hugenroth 的 ShaderToy 云/海着色器（体素云 + 上帝光 + 反射天空的水面），新建 public/sky.js 用 WebGL2 逐帧渲染；iChannel0 用 256×256 白噪声贴图（与原版一致，water() 靠它做 7 层细浪）；渲染分辨率 RES_SCALE=0.7（海浪细节细，半分辨率会把浪糊没）。拿不到 WebGL2 就撤掉画布退回兜底色',
+              '另打印真实渲染器名以确认是否走 GPU，软件渲染（SwiftShader 等）时自动降分辨率兜底',
+              '旋钮按下走「2x → 4x → 1x → 天光」四格（起始停在 1x）：前 3 下照旧调速，第 4 下触发换肤（三条横线全亮 + 内圈虚线环作区分），再按一下退出主题、回到 2x 档；云海背景只在主题开启时跑，关闭即刻停帧',
+              '改动：public/style.css（主题参数组、磨边渐变、.sky-canvas、旋钮 .theme 环）、public/sky.js（新增）、public/index.html（画布 + 引入 sky.js + 版本号）、public/app.js（旋钮四档逻辑 + changelog）'] },
     { date: '2026-10-05', title: '主题 · 把散落的颜色收成一份变量层，为换肤铺路',
       items: ['把 style.css / index.html / app.js 三个文件里约 150 处字面色值收敛到 style.css 顶部的 :root 主题变量层，其余一律引用 var()',
               '白色与黑色覆盖层梯度由 --w / --k 一个基色派生（--w-06 即 rgba(255,255,255,.06)）；换浅色主题时把这两个基色对调，整族描边 / 悬停 / 高光 / 遮罩 / 投影一起翻过来',
@@ -1479,18 +1494,32 @@ scaleBar.addEventListener('keydown', e => {     // 键盘沿用原来的翻页�
   }
 });
 
-/* ---- 背景倍速旋钮：1x → 2x → 4x，亮起的横线条数即当前档位 ---- */
-const BG_SPEEDS = [1, 2, 4];
-let bgSpeedIdx = 0, knobTurns = 0;
+/* ---- 背景旋钮：按下走「2x → 4x → 1x → 天光」四格（起始停在 1x）。
+   前三格照旧只调背景呼吸速度；第 4 下才切主题 —— 黑烟玻璃换成正常玻璃、
+   字色提亮 0.3、背景交给 sky.js 的云海着色器（三条横线全亮 + 内圈虚线环作区分），
+   再按一下退出主题、回到 2x 档。 ---- */
+const KNOB_STEPS = [
+  { speed: 2, bars: 2, sky: false },   // 第 1 下
+  { speed: 4, bars: 3, sky: false },   // 第 2 下
+  { speed: 1, bars: 1, sky: false },   // 第 3 下：回到 1x，与原三档循环一致
+  { speed: 1, bars: 3, sky: true  }    // 第 4 下：切天光主题
+];
+let knobStep = 0, knobTurns = 0;
 $('#speedKnob').onclick = () => {
-  bgSpeedIdx = (bgSpeedIdx + 1) % BG_SPEEDS.length;
-  const k = BG_SPEEDS[bgSpeedIdx];
+  const step = KNOB_STEPS[knobStep];
+  knobStep = (knobStep + 1) % KNOB_STEPS.length;
   document.getAnimations().forEach(a => {
-    if (a.animationName === 'bgShift') a.playbackRate = k;
+    if (a.animationName === 'bgShift') a.playbackRate = step.speed;
   });
-  Array.from($('#speedKnob').children).forEach((bar, i) => bar.classList.toggle('on', i <= bgSpeedIdx));
+  const knob = $('#speedKnob');
+  Array.from(knob.children).forEach((bar, i) => bar.classList.toggle('on', i < step.bars));
+  knob.classList.toggle('theme', step.sky);
+  // 换肤：整套参数挂在 style.css 的 html[data-theme="sky"]；云海背景同步启停，关则立刻停帧
+  if (step.sky) document.documentElement.setAttribute('data-theme', 'sky');
+  else document.documentElement.removeAttribute('data-theme');
+  window.LifeTrailSky?.setActive(step.sky);
   knobTurns++;                                   // 角度累加，环回时继续朝同一方向转，不倒转
-  $('#speedKnob').style.transform = `rotate(${knobTurns * 120}deg)`;
+  knob.style.transform = `rotate(${knobTurns * 120}deg)`;
 };
 
 /* ---- 基于日志、记忆与证据的本地对话 ---- */
@@ -1942,7 +1971,6 @@ function planNoteHtml(n) {
       <button class="note-check" type="button" data-act="check" aria-label="标记完成">${done ? '✓' : ''}</button>
       <b class="note-t">${esc(n.title)}</b>
       ${openable ? '<span class="note-caret">▾</span>' : ''}
-      <button class="note-x" type="button" data-act="del" aria-label="删除便签">×</button>
     </div>
     ${n.body ? `<p class="note-b">${esc(n.body)}</p>` : ''}
     ${open ? `<div class="note-open">
@@ -2056,12 +2084,6 @@ function planBind() {
     const id = note.dataset.id;
     if (act === 'check') {
       BOARD.done = BOARD.done.includes(id) ? BOARD.done.filter(x => x !== id) : [...BOARD.done, id];
-      renderWall(); saveBoard(); return;
-    }
-    if (act === 'del') {
-      BOARD.notes = BOARD.notes.filter(n => n.id !== id);
-      BOARD.cols = BOARD.cols.map(c => c.filter(x => x !== id));
-      BOARD.done = BOARD.done.filter(x => x !== id);
       renderWall(); saveBoard(); return;
     }
     const item = BOARD.notes.find(n => n.id === id);

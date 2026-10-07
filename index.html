@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!-- GitHub Pages 前端部署入口：静态托管时以本文件为首页。
+     资源统一指向 lifetrail-web/public/（同一套前端），改那边即可，只有页面结构变了才需要同步本文件。
+     本地服务仍由 server.js 注入访问令牌后返回 lifetrail-web/public/index.html；静态环境下 /api/* 不可用，页面自动退回内置数据。 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +10,7 @@
 <meta http-equiv="Expires" content="0">
 <title>历程 · LifeTrail</title>
 <meta name="lt-token" content="__LIFETRAIL_TOKEN__">
-<link rel="stylesheet" href="style.css?v=49">
+<link rel="stylesheet" href="lifetrail-web/public/style.css?v=49">
 </head>
 <body>
 <canvas class="sky-canvas" id="skyCanvas" aria-hidden="true"></canvas>
@@ -377,8 +380,8 @@
   </div>
 </div>
 
-<script src="glass.js?v=9"></script>
-<script src="sky.js?v=3"></script>
-<script src="app.js?v=70"></script>
+<script src="lifetrail-web/public/glass.js?v=9"></script>
+<script src="lifetrail-web/public/sky.js?v=3"></script>
+<script src="lifetrail-web/public/app.js?v=70"></script>
 </body>
 </html>
