@@ -185,7 +185,9 @@ function buildStats() {
     judgments: { total: rec.judgments.length,
       evaluated: rec.judgments.filter(j => String(j.actual || '').trim()).length },
     stage: active ? { name: active.name, purpose: active.purpose ?? null } : null,
-    recent
+    recent,
+    // 日志索引（日期 + 标题）：静态快照带着它，没有后端时也能算日志分、渲染时间轴
+    logIndex: LOGS.map(l => ({ d: l.date, t: l.title }))
   };
 }
 /* 静态快照：静态部署（GitHub Pages 等）没有后端，前端连不上 /api 时读它兜底，
@@ -263,6 +265,27 @@ function loadLogs() {
   }).sort((a, b) => b.date.localeCompare(a.date));
 }
 let LOGS = loadLogs();
+
+/* 同步：日志目录是外部（写作流程 / 手动）随时会加文件的，服务跑着的时候没人会主动通知。
+ * 每次前端来取日志或统计前，先比一次目录的文件清单（只 readdir、不读正文，很便宜），
+ * 变了就重扫并重写静态快照——新日志一落盘，刷新页面就能看到，不必重启服务。 */
+let LOG_FP = '';
+function logFingerprint() {
+  try {
+    return fs.readdirSync(LOG_DIR, { recursive: true })
+      .map(String).filter(f => /^\d{4}-\d{2}-\d{2}_.+\.txt$/i.test(path.basename(f)))
+      .sort().join('|');
+  } catch { return ''; }
+}
+function refreshLogsIfChanged() {
+  const fp = logFingerprint();
+  if (fp === LOG_FP) return false;
+  LOG_FP = fp;
+  LOGS = loadLogs();
+  console.log(`日志目录有变化，已重新索引 ${LOGS.length} 篇`);
+  writeSnapshot();
+  return true;
+}
 
 /* 中文二字虚词：不做剔除时，「我为什么总是逃避竞争」会切出
  * 我为/为什/什么/么总/总是 这类词，靠它们在无关日志里刷出大量假命中。 */
@@ -498,11 +521,18 @@ async function handler(req, res) {
       if (token !== AUTH_TOKEN)
         return json(res, 401, { error: '缺少或无效的本地访问令牌，请通过 http://127.0.0.1:3217 打开页面' });
     }
-    if (url.pathname === '/api/health' && req.method === 'GET')
+    if (url.pathname === '/api/health' && req.method === 'GET') {
+      refreshLogsIfChanged();
       return json(res, 200, { ok: true, version: '0.5', logs: LOGS.length, memory: getState().memories.length });
-    if (url.pathname === '/api/logs' && req.method === 'GET')
+    }
+    if (url.pathname === '/api/logs' && req.method === 'GET') {
+      refreshLogsIfChanged();
       return json(res, 200, LOGS.map(({ date, title, category, path }) => ({ date, title, category, path })));
-    if (url.pathname === '/api/stats' && req.method === 'GET') return json(res, 200, buildStats());
+    }
+    if (url.pathname === '/api/stats' && req.method === 'GET') {
+      refreshLogsIfChanged();
+      return json(res, 200, buildStats());
+    }
     if (url.pathname === '/api/stages' && req.method === 'GET') {
       const list = getRecords().stages.slice()
         .sort((a, b) => String(b.start_date || '').localeCompare(String(a.start_date || '')))
@@ -545,6 +575,7 @@ async function handler(req, res) {
       return json(res, 200, getRecords().snapshots.map(snapshotView));
     if (url.pathname === '/api/import' && req.method === 'POST') {
       LOGS = loadLogs();                                    // 重新扫描日志目录
+      LOG_FP = logFingerprint();                            // 手动导入后同步刷新变更指纹
       writeSnapshot();                                      // 篇数变了，静态快照同步重写
       return json(res, 200, { imported: LOGS.length });
     }
@@ -671,5 +702,6 @@ async function handler(req, res) {
 http.createServer(handler).listen(PORT, HOST, () => {
   console.log(`LifeTrail v0.5: http://${HOST}:${PORT}`);
   console.log(`已索引 ${LOGS.length} 篇日志；状态目录：${STATE_DIR}`);
+  LOG_FP = logFingerprint();
   writeSnapshot();
 });

@@ -317,6 +317,11 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-08', title: '同步 · 新日志自动重索引；离线也能算日志分与时间轴',
+      items: ['服务运行时往日志目录加文件，原先不会自动感知（要重启或手动 /api/import）。现在 /api/health、/api/logs、/api/stats 在处理前先比一次目录文件清单（只 readdir、不读正文），有变化就重扫并重写静态快照——新日志落盘后刷新页面即可看到',
+              '静态快照新增 logIndex（每篇的日期与标题）：静态部署没有后端时，时间轴与「稳定度」的日志分改用快照计算，不再退回写死的 DEMO（此前离线稳定度只能出 31%，与联网的 39% 对不上）',
+              'model-brief.md 的「154 篇」更正为 156 篇——它是注入对话上下文的简报，不修则 AI 会跟着报错数',
+              '改动：server.js（buildStats 加 logIndex、logFingerprint / refreshLogsIfChanged、三处路由与启动、/api/import）、public/app.js（快照缓存、fetchLogs 用 logIndex）、data/model-brief.md、public/index.html 与根 index.html（版本号）'] },
     { date: '2026-10-08', title: '数据 · 统一动作口径，并给静态部署导出统计快照',
       items: ['总览「洞察转化率」原先用 done / 全部动作（6/10 = 60%），而动作页留痕率把标了 ongoing 的任务排除在外（6/9）——同一批动作两个分母。后端 buildStats 改为同口径排除 ongoing，两处统一',
               '新增静态快照：后端启动与重新导入日志时把 buildStats() 的结果写到 public/stats.json；静态部署（GitHub Pages）没有后端，前端 loadStats 失败时先读该快照，再退回写死的 DEMO，避免篇数等退回 154 这类旧值',
@@ -1054,14 +1059,19 @@ function logScore(logs) {
 }
 
 /* ============ 数据加载 ============ */
-/* 静态部署没有后端：读构建时导出的 stats.json 快照，避免整套统计退回写死的演示数据 */
+/* 静态部署没有后端：读构建时导出的 stats.json 快照，避免整套统计退回写死的演示数据。
+   只取一次并缓存——快照是构建时定格的，同一页面重复取没有意义。 */
+let STATIC = null, STATIC_TRIED = false;
 async function loadStaticStats() {
+  if (STATIC_TRIED) return STATIC;
+  STATIC_TRIED = true;
   try {
     const r = await fetch(`${LT_BASE}stats.json`, { cache: 'no-store' });
     if (!r.ok) return null;
     const d = await r.json();
-    return (d && typeof d.logs === 'number') ? d : null;
-  } catch { return null; }
+    STATIC = (d && typeof d.logs === 'number') ? d : null;
+  } catch { STATIC = null; }
+  return STATIC;
 }
 async function loadStats() {
   let s;
@@ -1124,8 +1134,11 @@ async function fetchLogs() {
     ALL_LOGS = await api('/api/logs?limit=100000');
   } catch {
     markOffline();
-    ALL_LOGS = Object.entries(DEMO.logs).flatMap(([y, items]) =>
-      items.map(([md, title]) => ({ date: `${y}-${md}-01`, title, category: '洞察' })));
+    const st = await loadStaticStats();     // 快照里的日志索引比写死的 DEMO 新，优先用它
+    ALL_LOGS = (st && Array.isArray(st.logIndex) && st.logIndex.length)
+      ? st.logIndex.map(x => ({ date: x.d, title: x.t, category: '洞察' }))
+      : Object.entries(DEMO.logs).flatMap(([y, items]) =>
+          items.map(([md, title]) => ({ date: `${y}-${md}-01`, title, category: '洞察' })));
   }
   return ALL_LOGS;
 }
