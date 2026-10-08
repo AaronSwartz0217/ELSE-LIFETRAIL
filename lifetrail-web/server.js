@@ -162,7 +162,10 @@ function snapshotView(s) {
 }
 function buildStats() {
   const rec = getRecords();
-  const done = rec.actions.filter(a => a.artifact && String(a.artifact).trim()).length;
+  // 与动作页留痕率同口径：标了 ongoing 的任务还在进行、尚未收尾，不计入分母，
+  // 否则总览「洞察转化率」与动作页「留痕率」会对同一批动作给出两个不同的分母。
+  const counted = rec.actions.filter(a => (a.status || 'done') !== 'ongoing');
+  const done = counted.filter(a => a.artifact && String(a.artifact).trim()).length;
   const active = rec.stages.find(s => s.is_active);
   const recent = LOGS.slice(0, 6).map(log => {
     const line = String(log.body || '').split('\n').map(x => x.trim()).find(Boolean) || '';
@@ -177,13 +180,20 @@ function buildStats() {
       if (/^\d{4}-\d{2}$/.test(k)) m[k] = (m[k] || 0) + 1;
       return m;
     }, {}),
-    actions: { total: rec.actions.length, done },
+    actions: { total: counted.length, done, ongoing: rec.actions.length - counted.length },
     // 判断只统计「样本数」：已填「实际结果」的条数。结果对错属 AI 推断，不算命中率。
     judgments: { total: rec.judgments.length,
       evaluated: rec.judgments.filter(j => String(j.actual || '').trim()).length },
     stage: active ? { name: active.name, purpose: active.purpose ?? null } : null,
     recent
   };
+}
+/* 静态快照：静态部署（GitHub Pages 等）没有后端，前端连不上 /api 时读它兜底，
+ * 免得整套统计退回写死的 DEMO、与真实篇数对不上。启动与重新导入日志后各重写一次。 */
+const SNAPSHOT_FILE = path.join(PUBLIC_DIR, 'stats.json');
+function writeSnapshot() {
+  try { fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(buildStats(), null, 2), 'utf8'); }
+  catch (e) { console.warn(`静态快照写入失败：${e.message}`); }
 }
 /* 模式：off＝完全不调模型；local / external＝分别使用下面两套配置，互不覆盖。
  * 这样接外接 Key 时不用把本地的地址和模型改掉，来回切也不用重填。 */
@@ -535,6 +545,7 @@ async function handler(req, res) {
       return json(res, 200, getRecords().snapshots.map(snapshotView));
     if (url.pathname === '/api/import' && req.method === 'POST') {
       LOGS = loadLogs();                                    // 重新扫描日志目录
+      writeSnapshot();                                      // 篇数变了，静态快照同步重写
       return json(res, 200, { imported: LOGS.length });
     }
     /* ---- 计划白板 ---- */
@@ -660,4 +671,5 @@ async function handler(req, res) {
 http.createServer(handler).listen(PORT, HOST, () => {
   console.log(`LifeTrail v0.5: http://${HOST}:${PORT}`);
   console.log(`已索引 ${LOGS.length} 篇日志；状态目录：${STATE_DIR}`);
+  writeSnapshot();
 });

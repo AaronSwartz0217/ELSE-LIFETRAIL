@@ -21,6 +21,14 @@ const api = async (u, opt) => {
   return data;
 };
 
+/* 静态资源基址：本地服务下 index.html 与资源同目录（基址为空串）；
+   GitHub Pages 的根入口把资源放在 lifetrail-web/public/ 下。
+   直接由本脚本自身的 src 反推，两种环境都不用改代码。 */
+const LT_BASE = (() => {
+  const s = document.currentScript;
+  return s && s.src ? s.src.replace(/[^/]*$/, '') : '';
+})();
+
 /* 日志篇数：全站文案的唯一来源。
    总览卡片、时间轴/阶段/评价页说明、评价页事实与出处都从这里取值，
    由 loadStats() 拿到 /api/stats 的真实值后统一刷新，避免各处写死后随日志增长失准。 */
@@ -309,6 +317,11 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-08', title: '数据 · 统一动作口径，并给静态部署导出统计快照',
+      items: ['总览「洞察转化率」原先用 done / 全部动作（6/10 = 60%），而动作页留痕率把标了 ongoing 的任务排除在外（6/9）——同一批动作两个分母。后端 buildStats 改为同口径排除 ongoing，两处统一',
+              '新增静态快照：后端启动与重新导入日志时把 buildStats() 的结果写到 public/stats.json；静态部署（GitHub Pages）没有后端，前端 loadStats 失败时先读该快照，再退回写死的 DEMO，避免篇数等退回 154 这类旧值',
+              '前端按自身 script 的 src 反推资源基址 LT_BASE，本地与 Pages（根入口带 lifetrail-web/public/ 前缀）两种路径下都能取到 stats.json，无需改代码',
+              '改动：server.js（buildStats 口径、writeSnapshot、启动与 /api/import 调用）、public/app.js（LT_BASE、loadStaticStats、loadStats 兜底）、public/index.html 与根 index.html（版本号）'] },
     { date: '2026-10-06', title: '白板 · 去掉便签右上角的「×」',
       items: ['便签右上角的删除按钮（.note-x）移除：那个位置太容易误点；删除便签仍可拖到「删除」拖放区完成',
               '改动：public/app.js（planNoteHtml 去掉按钮、planBind 去掉 del 分支）、public/style.css（移除 .note-x 样式）、public/index.html（版本号）'] },
@@ -1041,9 +1054,19 @@ function logScore(logs) {
 }
 
 /* ============ 数据加载 ============ */
+/* 静态部署没有后端：读构建时导出的 stats.json 快照，避免整套统计退回写死的演示数据 */
+async function loadStaticStats() {
+  try {
+    const r = await fetch(`${LT_BASE}stats.json`, { cache: 'no-store' });
+    if (!r.ok) return null;
+    const d = await r.json();
+    return (d && typeof d.logs === 'number') ? d : null;
+  } catch { return null; }
+}
 async function loadStats() {
   let s;
-  try { s = await api('/api/stats'); } catch { markOffline(); s = DEMO.stats; }
+  try { s = await api('/api/stats'); }
+  catch { markOffline(); s = (await loadStaticStats()) || DEMO.stats; }
   try {                                     // 日志总数以本地服务实际索引为准
     const h = await api('/api/health');
     if (h && typeof h.logs === 'number') s = { ...s, logs: h.logs };
