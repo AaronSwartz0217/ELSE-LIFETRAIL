@@ -1,7 +1,7 @@
 {
-  "version": "1.3",
+  "version": "1.4",
   "created_at": "2026-10-03",
-  "updated_at": "2026-10-04",
+  "updated_at": "2026-10-09",
   "files": [
     {
       "path": "01_个人信息与关系时间线补丁.md",
@@ -35,8 +35,8 @@
     },
     {
       "path": "07_十年时间线_详版含推断.md",
-      "bytes": 20179,
-      "sha256": "C2EEB2377C67327A91978C75E300C4A01B8CDBA592E06BF6F40CAB6E74AF3D3F"
+      "bytes": 22476,
+      "sha256": "C44BDA7EE6A390250643508F09F3FEBB1C9FCE7687B7ADF8918BE2BD109861C2"
     },
     {
       "path": "08_语气与对话风格补丁.md",
@@ -44,9 +44,14 @@
       "sha256": "D3639C542AA087D9C4EC2EF160E8C26A7BAA34AB9D1BC2C4A41B4CF1ECFB2650"
     },
     {
+      "path": "09_家族事件与经济纠纷_本人确认.md",
+      "bytes": 4764,
+      "sha256": "09CBAAF5776C607BE1D5E90B3633D4C7393A2B0AA907360C895E38166C4DFAB2"
+    },
+    {
       "path": "README.md",
-      "bytes": 3890,
-      "sha256": "13B04317CE21E08579A2D09FE8E5438CA07FD35B280C3AB09F380415EA554546"
+      "bytes": 4237,
+      "sha256": "27569D7FAD7DD3BFCBAAB69FD86DA198B8B7628EC1ADF5F9875B61F696CAFC87"
     },
     {
       "path": "数据快照/else_web_tree_snapshot.json",
