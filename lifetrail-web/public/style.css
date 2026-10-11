@@ -630,6 +630,30 @@ select{background:var(--w-06);border:1px solid var(--line);
   .rev-tilt{transition:none}
 }
 
+/* ============ 学习 · 累积式路线库 ============ */
+.ln-track{padding:20px 0;border-top:1px solid var(--line)}
+.ln-track:first-child{border-top:0;padding-top:6px}
+.ln-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ln-name{font-size:15px;color:var(--t1);font-weight:600}
+.ln-status{font-size:10.5px;letter-spacing:.5px;border-radius:999px;padding:2px 9px;
+  border:1px solid var(--line-t1);color:var(--t2)}
+.ln-status.doing{color:var(--c-gold);border-color:rgba(var(--c-gold-rgb),.5)}
+.ln-status.done{color:var(--c-green);border-color:rgba(var(--c-green-rgb),.5)}
+.ln-pct{margin-left:auto;font-size:12px;color:var(--t3);font-variant-numeric:tabular-nums}
+.ln-bar{height:4px;border-radius:999px;background:var(--w-10);overflow:hidden;margin:10px 0 14px}
+.ln-bar i{display:block;height:100%;border-radius:999px;background:var(--c-gold);transition:width .5s}
+.ln-goal{font-size:12.5px;color:var(--t2);line-height:1.9}
+.ln-steps{list-style:none;margin:12px 0 0;display:flex;flex-direction:column;gap:8px}
+.ln-step{font-size:12.5px;color:var(--t2);line-height:1.8;padding-left:24px;position:relative}
+.ln-step::before{content:"";position:absolute;left:0;top:5px;width:12px;height:12px;
+  border-radius:50%;border:1px solid var(--line-t1)}
+.ln-step.done{color:var(--t3)}
+.ln-step.done::before{border-color:rgba(var(--c-green-rgb),.6);background:rgba(var(--c-green-rgb),.35)}
+.ln-step.doing::before{border-color:rgba(var(--c-gold-rgb),.7);
+  background:conic-gradient(var(--c-gold) 50%,transparent 50%)}
+.ln-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;margin-top:6px}
+@media(max-width:680px){.ln-cols{grid-template-columns:1fr;gap:0}}
+
 /* ============ 计划白板 · 自由便签墙 ============ */
 .board-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0 4px;
   padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:var(--glass);

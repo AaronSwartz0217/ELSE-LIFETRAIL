@@ -323,6 +323,12 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-12', title: '学习 · 新增「学习」页（后端知识库，只读）',
+      items: ['侧栏「白板」后新增第 11 项「学习」：一页看清 TA（技术美术迁移）与 Vibe 知识视频两条线的「目标 / 步骤与状态 / 坑 / 依据 / 下一步」，随日志刷新',
+              '前后端分离：内容为后端知识库——data/learning.json 存索引（路线清单 / 顺序 / 状态 / updated_at / intro），data/learning/<file>.md 每条路线一份正文（内容源，AI 自动总结时直接改 md）',
+              '后端仅加只读接口 GET /api/learning：现读索引 + 解析各 md 的 5 个固定小节（目标 / 步骤 / 坑 / 依据 / 下一步），步骤用 - [x]/[~]/[ ] 表达 done/doing/todo，进度条现算；无 POST、不写盘',
+              '前端不再内联任何学习数据，只加 renderLearn/loadLearn 取数渲染；接口不可用时页内提示「需启动本地服务」，不落静态兜底、不改页脚离线态',
+              '改动：server.js（LEARNING_FILE/LEARNING_DIR、parseTrackMd、getLearning、路由）、public/app.js（renderLearn/loadLearn、导航分发、changelog）、public/index.html 与根 index.html（侧栏项、#p-learn、版本号）、public/style.css（.ln-* 样式）、data/learning.json 与 data/learning/*.md（新建）、数据/必读/04_日志更新协议.md（新增 D6）'] },
     { date: '2026-10-12', title: '日志 · 新爬 2 篇入库，全站篇数 159 → 161',
       items: ['接入新一批 Qzone 重爬数据（目录里叠了两批：旧批止于 2026-10-01、新批止于 2026-10-12）：逐条按「日期 + 正文」与库内比对，真正新增 2 篇——2026-10-11《技术美术迁移与预算》、2026-10-12《UE5技术美术架构总结》；其余均为同篇的日期漂移（如 2023-10-25↔10-26、2023-12-17↔2024-02-15、2026-07-02↔07-03、2026-08-19↔08-20）或图片型重复（如 2026-09-13《阿巴巴》↔《男性浪漫主义》）',
               '2 篇新日志按库内规范重排（标题 / 时间「编辑于」/ 日志ID / 原链接 / 【正文】/【评论】），正文原样搬运；10-11 带 2 条评论',
@@ -1753,7 +1759,7 @@ $('#nav').addEventListener('click', e => {
     p.classList.toggle('on', p.id === 'p-' + btn.dataset.p));
   mainScroller.scrollTo({ top: 0, behavior: 'instant' });
   ({ timeline: loadTimeline, stages: loadStages, actions: loadActions,
-     judgments: loadJudgments, plan: loadPlan, review: loadReview, updates: loadUpdates, chat: loadChat }[btn.dataset.p] || (() => {}))();
+     judgments: loadJudgments, plan: loadPlan, learn: loadLearn, review: loadReview, updates: loadUpdates, chat: loadChat }[btn.dataset.p] || (() => {}))();
   setTimeout(updateScrollArrows, 80);
 });
 
@@ -2042,6 +2048,57 @@ async function loadReview() {
   renderRevCritiques();
   renderRevOutro();
   startRevParticles();
+  setTimeout(updateScrollArrows, 80);
+}
+
+/* ============================================================
+ * 学习 · 累积式路线库（后端知识库，只读）
+ * 内容不在前端：data/learning.json 存索引，data/learning/<file>.md 每条路线一份正文。
+ * 本页只取 GET /api/learning 的数据渲染；接口不可用就提示启动本地服务。
+ * ============================================================ */
+const LEARN_STATE_LABEL = { doing: '进行中', done: '已完成', todo: '待开始' };
+function renderLearn(d) {
+  const tracks = (d && d.tracks) || [];
+  $('#learnIntro').innerHTML =
+    '<div class="k">学习路线库</div>' +
+    `<p class="sub" style="margin-top:8px">${esc((d && d.intro) || '')}</p>` +
+    `<div class="sub" style="margin-top:6px">最后刷新 ${esc((d && d.updatedAt) || '—')} · 共 ${tracks.length} 条路线 · 内容源 data/learning/</div>`;
+  if (!tracks.length) {
+    $('#learnTracks').innerHTML = '<p class="sub">还没有学习路线。往 data/learning.json 的 tracks 里加一条，并在 data/learning/ 下补同名 md。</p>';
+    return;
+  }
+  $('#learnTracks').innerHTML = tracks.map(t => {
+    const steps = t.steps || [], total = steps.length || 1;
+    const done = steps.reduce((s, x) => s + (x.state === 'done' ? 1 : x.state === 'doing' ? 0.5 : 0), 0);
+    const pct = Math.round(done / total * 100);
+    const st = LEARN_STATE_LABEL[t.state] || t.state || '';
+    return `<div class="ln-track">
+      <div class="ln-head">
+        <span class="ln-name">${esc(t.name)}</span>
+        ${st ? `<span class="ln-status ${esc(t.state)}">${esc(st)}</span>` : ''}
+        <span class="ln-pct">${pct}%</span>
+      </div>
+      <div class="ln-bar"><i style="width:${pct}%"></i></div>
+      <div class="ln-goal">${esc(t.goal || '')}</div>
+      <ul class="ln-steps">${steps.map(s =>
+        `<li class="ln-step ${esc(s.state)}">${esc(s.text)}</li>`).join('')}</ul>
+      <div class="ln-cols">
+        <div class="rev-watch"><b>坑</b><ul>${(t.pitfalls || []).map(p => `<li>${esc(p)}</li>`).join('') || '<li>—</li>'}</ul></div>
+        <div class="rev-watch"><b>下一步</b><ul>${(t.next || []).map(p => `<li>${esc(p)}</li>`).join('') || '<li>—</li>'}</ul></div>
+      </div>
+      <div class="sub" style="margin-top:12px">依据：${(t.evidence || []).map(e => `${esc(e.date)} · ${esc(e.title)}`).join('　') || '—'}</div>
+    </div>`;
+  }).join('');
+}
+async function loadLearn() {
+  try {
+    renderLearn(await api('/api/learning'));
+  } catch (err) {
+    console.warn('[loadLearn] 接口不可用，需启动本地服务：', err && err.message);
+    const box = $('#learnTracks');
+    if (box) box.innerHTML = '<p class="sub">需启动本地服务（node server.js）后刷新查看学习路线。</p>';
+    const intro = $('#learnIntro'); if (intro) intro.innerHTML = '';
+  }
   setTimeout(updateScrollArrows, 80);
 }
 

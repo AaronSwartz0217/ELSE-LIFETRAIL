@@ -10,7 +10,7 @@
 <meta http-equiv="Expires" content="0">
 <title>历程 · LifeTrail</title>
 <meta name="lt-token" content="__LIFETRAIL_TOKEN__">
-<link rel="stylesheet" href="lifetrail-web/public/style.css?v=50">
+<link rel="stylesheet" href="lifetrail-web/public/style.css?v=51">
 </head>
 <body>
 <canvas class="sky-canvas" id="skyCanvas" aria-hidden="true"></canvas>
@@ -28,6 +28,7 @@
       <button data-p="actions">动作</button>
       <button data-p="judgments">判断</button>
       <button data-p="plan">白板</button>
+      <button data-p="learn">学习</button>
       <button data-p="review">评价</button>
       <button data-p="body">身体</button>
       <button data-p="updates">更新</button>
@@ -305,6 +306,13 @@
       <div class="wall" id="planWall"></div>
     </section>
 
+    <section class="page" id="p-learn">
+      <h2 class="pt">学习</h2>
+      <p class="sub">待迁移与要补的知识 · 累积式路线库，每步都挂回日志出处（随日志更新）</p>
+      <div class="card wide" data-glass id="learnIntro"></div>
+      <div class="card wide" data-glass id="learnTracks"></div>
+    </section>
+
     <section class="page" id="p-updates">
       <h2 class="pt">更新</h2>
       <p class="sub">每次对站点与数据的改动索引 · 按时间倒序</p>
@@ -412,6 +420,6 @@
 
 <script src="lifetrail-web/public/glass.js?v=9"></script>
 <script src="lifetrail-web/public/sky.js?v=3"></script>
-<script src="lifetrail-web/public/app.js?v=78"></script>
+<script src="lifetrail-web/public/app.js?v=79"></script>
 </body>
 </html>

@@ -72,6 +72,52 @@ function saveRecords(rec) { writeJson(RECORDS_FILE, rec); }
  * 每次改动（新建/改名/删板、贴便签、勾选、拖动换列）都会重写对应的 md。 */
 const BOARDS_FILE = path.join(STATE_DIR, 'boards.json');
 const BOARDS_DIR = path.join(STATE_DIR, 'boards');
+
+/* ---- 学习路线（知识库 · 只读）----
+ * 索引 data/learning.json 列出有哪些路线；每条路线的正文是 data/learning/<file>.md，
+ * 由 AI 在每次入库日志后自动总结刷新。服务只读不写：GET /api/learning 现读现解析。 */
+const LEARNING_FILE = path.join(STATE_DIR, 'learning.json');
+const LEARNING_DIR = path.join(STATE_DIR, 'learning');
+/* md 只认这 5 个 ## 小节；步骤用 - [x]/[~]/[ ] 表达 done/doing/todo */
+const LEARN_STEP_STATE = { x: 'done', '~': 'doing', ' ': 'todo' };
+function parseTrackMd(text) {
+  const out = { goal: '', steps: [], pitfalls: [], evidence: [], next: [] };
+  let section = '';
+  for (const raw of String(text || '').split(/\r?\n/)) {
+    const line = raw.trim();
+    const h = line.match(/^##\s+(.+?)\s*$/);
+    if (h) { section = h[1]; continue; }
+    if (/^#\s/.test(line)) { section = ''; continue; }        // 一级标题只是标题
+    if (!line) continue;
+    const item = line.match(/^[-*]\s+(.*)$/);
+    const body = (item ? item[1] : line).trim();
+    if (!body) continue;
+    if (section === '目标') { out.goal = out.goal ? out.goal + ' ' + body : body; continue; }
+    if (!item) continue;                                      // 目标以外的小节只收列表项
+    if (section === '步骤') {
+      const m = body.match(/^\[(.)\]\s*(.*)$/);
+      out.steps.push({ text: (m ? m[2] : body).trim(), state: m ? (LEARN_STEP_STATE[m[1]] || 'todo') : 'todo' });
+    } else if (section === '坑') out.pitfalls.push(body);
+    else if (section === '依据') {
+      const m = body.match(/^(\S+)\s*[·:：]\s*(.*)$/);
+      out.evidence.push(m ? { date: m[1], title: m[2].trim() } : { date: '', title: body });
+    } else if (section === '下一步') out.next.push(body);
+  }
+  return out;
+}
+function getLearning() {
+  const idx = readJson(LEARNING_FILE, null) || {};
+  const tracks = (Array.isArray(idx.tracks) ? idx.tracks : []).slice()
+    .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
+    .map(t => {
+      const file = String(t.file || '');
+      let md = '';
+      try { md = fs.readFileSync(path.join(LEARNING_DIR, file), 'utf8'); } catch {}
+      return { id: String(t.id || ''), name: String(t.name || ''), state: String(t.state || ''), file, ...parseTrackMd(md) };
+    });
+  return { updatedAt: idx.updated_at || null, intro: String(idx.intro || ''), tracks };
+}
+
 function defaultBoards() { return { boards: [] }; }
 function getBoards() {
   const raw = readJson(BOARDS_FILE, null);
@@ -612,6 +658,9 @@ async function handler(req, res) {
       return json(res, 200, { ok: true, boards: db.boards.map(b => ({ id: b.id, name: b.name,
         updatedAt: b.updatedAt || null, count: (b.notes || []).length })) });
     }
+    /* ---- 学习路线（只读）---- */
+    if (url.pathname === '/api/learning' && req.method === 'GET')
+      return json(res, 200, getLearning());
     if (url.pathname === '/api/ai/config' && req.method === 'GET') return json(res, 200, publicConfig());
     if (url.pathname === '/api/ai/config' && req.method === 'PUT') {
       const body = await readBody(req), old = getConfig();
