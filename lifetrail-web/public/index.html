@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <title>历程 · LifeTrail</title>
 <meta name="lt-token" content="__LIFETRAIL_TOKEN__">
-<link rel="stylesheet" href="style.css?v=49">
+<link rel="stylesheet" href="style.css?v=50">
 </head>
 <body>
 <canvas class="sky-canvas" id="skyCanvas" aria-hidden="true"></canvas>
@@ -79,7 +79,7 @@
       <div class="card wide" data-glass id="yearDetail"></div>
 
       <h3 class="sec">全量分析 · 8 个转折点</h3>
-      <p class="sub" style="margin-bottom:12px">依据全部 <span data-lognum>154</span> 篇日志与 DLC 01–07 重排；红线＝结构性转折（有本人确认或硬事件），橙线＝过程性转折（以推断为主）。点任一条看该转折的时点、具体内容、原因与证据。</p>
+      <p class="sub" style="margin-bottom:12px">依据全部 <span data-lognum>161</span> 篇日志与 DLC 01–07 重排；红线＝结构性转折（有本人确认或硬事件），橙线＝过程性转折（以推断为主）。点任一条看该转折的时点、具体内容、原因与证据。</p>
       <div id="tpList" class="tp-list"></div>
 
       <h3 class="sec">逐条明细</h3>
@@ -123,7 +123,7 @@
 
       <div class="card wide" data-glass>
         <div class="k">发展阶段模型 · <span id="stageCount">11</span> 个可核验阶段</div>
-        <p class="sub" style="margin-top:6px">按 <span data-lognum>154</span> 篇原始日志与补回图片重新划分；每段列出关键证据、真正变化、尚未完成与解释边界。</p>
+        <p class="sub" style="margin-top:6px">按 <span data-lognum>161</span> 篇原始日志与补回图片重新划分；每段列出关键证据、真正变化、尚未完成与解释边界。</p>
         <div id="stageTheory" style="margin-top:12px"></div>
       </div>
 
@@ -218,6 +218,33 @@
       </div>
 
       <div class="card wide" data-glass>
+        <div class="k">训练建议 · AI 建议（待本人确认）</div>
+        <div style="margin-top:8px;font-size:12.5px">
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:var(--t1);font-weight:600;min-width:72px">优先级</b>
+            <span style="color:var(--t2)">脊柱侧弯 &gt; 肩背 &gt; 瘦脸 / 水肿 —— 健康问题排在两个外观目标之前</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:var(--t1);font-weight:600;min-width:72px">脊柱</b>
+            <span style="color:var(--t2)">先拍片拿到 Cobb 角，再定训练方案；2026-10-09 评论提到肩胛骨外翻右臂，可能与侧弯相关，别用“练得更多”替代诊断</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:var(--t1);font-weight:600;min-width:72px">训练</b>
+            <span style="color:var(--t2)">把“每天四组飞鸟”改为每周三次、以拉为主（划船 / 引体 / 面拉）、渐进加阻；保留吊单杠与背部拉伸，补深蹲与快走</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)">
+            <b style="color:var(--t1);font-weight:600;min-width:72px">作息饮食</b>
+            <span style="color:var(--t2)">水肿先降钠、早睡（23:30 前）；每餐一掌心蛋白 + 半盘蔬菜；肌酸可按 3–5 g/天补充（10-09 已提到要买）</span>
+          </div>
+          <div style="display:flex;gap:14px;padding:9px 2px">
+            <b style="color:var(--t1);font-weight:600;min-width:72px">度量</b>
+            <span style="color:var(--t2)">每周记体重 / 腰围 / 引体最大次数，用数据判断有没有效；瘦脸无局部减脂，只能整体降脂</span>
+          </div>
+        </div>
+        <p class="sub" style="margin-top:10px">来源：2026-10-01《human3.0建议》60 天指南 + 2026-10-09《身体的补充》+ DLC05；为 AI 建议，未经本人确认，非事实。</p>
+      </div>
+
+      <div class="card wide" data-glass>
         <div class="k">待确认</div>
         <ul class="recent" style="margin-top:8px">
           <li><span>锻炼地点（家 / 健身房 / 公园）暂无记录</span></li>
@@ -229,7 +256,10 @@
 
     <section class="page" id="p-review">
       <h2 class="pt">评价</h2>
-      <p class="sub">一份不客气的体检报告 · 依据全部 <span data-lognum>154</span> 篇日志与 DLC 01–08 全量分析（AI 综合，非自评）</p>
+      <p class="sub">一份不客气的体检报告 · 依据全部 <span data-lognum>161</span> 篇日志与 DLC 01–08 全量分析（AI 综合，非自评）</p>
+
+      <h3 class="sec">最新评价 · 随日志更新</h3>
+      <div id="revLatest"></div>
 
       <div class="rev-hero card wide" data-glass id="revHero"></div>
 
@@ -379,6 +409,6 @@
 
 <script src="glass.js?v=9"></script>
 <script src="sky.js?v=3"></script>
-<script src="app.js?v=74"></script>
+<script src="app.js?v=78"></script>
 </body>
 </html>

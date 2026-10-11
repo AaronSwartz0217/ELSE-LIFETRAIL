@@ -1,7 +1,7 @@
 {
-  "version": "1.4",
+  "version": "1.7",
   "created_at": "2026-10-03",
-  "updated_at": "2026-10-09",
+  "updated_at": "2026-10-12",
   "files": [
     {
       "path": "01_个人信息与关系时间线补丁.md",
@@ -25,8 +25,8 @@
     },
     {
       "path": "05_身体生活家庭与经济状况_本人确认.md",
-      "bytes": 2507,
-      "sha256": "9F2550DB1B4954DAE30EFD538C2B4565A55CE6A48EC2A92A1C50A23EF04AA76A"
+      "bytes": 3846,
+      "sha256": "823B5DA29C1D451EB0F0EE2101C064D20C127A9AE232045AFCE2AE10A3E994D9"
     },
     {
       "path": "06_大学阶段补充_本人确认.md",
@@ -35,8 +35,8 @@
     },
     {
       "path": "07_十年时间线_详版含推断.md",
-      "bytes": 22476,
-      "sha256": "C44BDA7EE6A390250643508F09F3FEBB1C9FCE7687B7ADF8918BE2BD109861C2"
+      "bytes": 23414,
+      "sha256": "2616A6670AFCB7E3945DE2D884D720B0BE4BC568745CD4D02C9E9AD91F5D3DBC"
     },
     {
       "path": "08_语气与对话风格补丁.md",
