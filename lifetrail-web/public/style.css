@@ -609,7 +609,11 @@ select{background:var(--w-06);border:1px solid var(--line);
   border-radius:999px;padding:2px 9px;font-weight:600}
 .rev-latest-h b{font-size:13px;color:var(--t1);font-weight:600}
 .rev-latest-since{font-size:11px;color:var(--t3);line-height:1.7}
-.rev-latest-verdict{font-size:12.5px;color:var(--t2);line-height:2;margin-top:12px}
+.rev-latest-verdict{font-size:13px;color:var(--t2);line-height:2.05;margin-top:12px}
+.rev-latest-verdict+.rev-latest-verdict{margin-top:10px}
+/* 评价重点标记：**…** 渲染为金色底纹高亮 */
+.rv-hl{background:linear-gradient(transparent 56%,rgba(var(--c-gold-rgb),.30) 56%);
+  color:var(--t1);font-weight:600;padding:0 1px;border-radius:2px}
 .rev-watch{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
 .rev-watch b{display:block;font-size:10.5px;color:var(--c-gold);letter-spacing:.7px;margin-bottom:8px}
 .rev-watch ul{list-style:none;display:flex;flex-direction:column;gap:7px}
