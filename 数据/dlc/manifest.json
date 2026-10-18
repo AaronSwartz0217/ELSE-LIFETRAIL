@@ -1,7 +1,7 @@
 {
-  "version": "1.7",
+  "version": "1.8",
   "created_at": "2026-10-03",
-  "updated_at": "2026-10-12",
+  "updated_at": "2026-10-19",
   "files": [
     {
       "path": "01_个人信息与关系时间线补丁.md",
@@ -35,8 +35,8 @@
     },
     {
       "path": "07_十年时间线_详版含推断.md",
-      "bytes": 23414,
-      "sha256": "2616A6670AFCB7E3945DE2D884D720B0BE4BC568745CD4D02C9E9AD91F5D3DBC"
+      "bytes": 23850,
+      "sha256": "FED597F25A4BF50EDAA806B588ECC4900F5EC4E0A9FEBB549633E4493E2B6F28"
     },
     {
       "path": "08_语气与对话风格补丁.md",
