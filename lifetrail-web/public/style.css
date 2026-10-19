@@ -626,6 +626,22 @@ select{background:var(--w-06);border:1px solid var(--line);
 .rev-latest-row:last-child{border-bottom:0}
 .rev-latest-row b{font-size:11.5px;color:var(--t1);font-weight:600;flex-shrink:0}
 .rev-latest-row span{font-size:11px;color:var(--t3);line-height:1.7}
+/* 历史评价：默认折叠成一行，点开看该次完整判断与要盯的事（保留，不丢） */
+.rev-past-row{cursor:pointer;border-radius:10px;border-bottom:1px solid var(--line)}
+.rev-past-row:last-child{border-bottom:0}
+.rev-past-row .rev-latest-row{border-bottom:0}
+.rev-past-row .rev-latest-row::before{content:"▸";font-size:10px;color:var(--t3);flex-shrink:0;transition:transform .2s}
+.rev-past-row:hover .rev-latest-row::before{color:var(--t2)}
+.rev-past-row.on .rev-latest-row::before{transform:rotate(90deg);color:var(--c-gold)}
+.rev-past-body{padding:2px 14px 12px}
+.rev-past-body .rev-latest-verdict{margin-top:8px}
+.rev-past-body .rev-watch{margin-top:10px}
+/* 承接上条：新评价显式带过仍开的事，避免旧指引被忘掉（迭代） */
+.rev-carry{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.rev-carry b{display:block;font-size:10.5px;color:var(--t3);letter-spacing:.7px;margin-bottom:8px}
+.rev-carry ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.rev-carry li{font-size:11.5px;color:var(--t3);line-height:1.75;padding-left:13px;position:relative}
+.rev-carry li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--t3)}
 
 @media(prefers-reduced-motion:reduce){
   .rev-ring-arc{animation:none}

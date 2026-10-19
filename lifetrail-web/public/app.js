@@ -330,6 +330,11 @@ const DEMO = {
   /* 更新索引 · 每次对站点与数据的改动。
      依据实际做过的改动记录；早于 2026-10-04 的条目为会话回溯，待本人核对。 */
   changelog: [
+    { date: '2026-10-20', title: '评价 · 历史评价可展开（保留）+ 新评价承接旧 watch（迭代）',
+      items: ['评价页「最新评价」区块升级：历史条默认折叠成一行，**点击展开**该次的完整判断（verdict 多段）与「要盯的事」；旧条一律保留、不再只剩一行摘要 —— 解决「评价容易忘记」',
+              '新增 `carry` 字段：每条新评价必须把上一条里未收尾的 watch 显式承接，渲染成「承接上条 · 仍开（未收尾）」区块，已收尾的才从承接去掉（本批已给 10-19 最新条补上 5 条承接：职业签约 / 成片数据表 /「太负责」硬边界 / 侧弯 Cobb 角 / 显卡别接盘）',
+              '把规则写进 04_日志更新协议 D3（升 1.4）：⑤ 保留——只在 `REVIEW.latest` 最前面新增、不得删除或覆盖旧条；⑥ 迭代——新条用 `carry` 承接未收尾的 watch',
+              '改动：public/app.js（REVIEW.latest 首条加 carry、renderRevLatest 支持展开与 carry）、public/style.css（.rev-past-row / .rev-past-body / .rev-carry）、public/index.html 与根 index.html（版本号 v0.6 → v0.7）、数据/必读/04_日志更新协议.md（升 1.4）'] },
     { date: '2026-10-19', title: '日志 · 新爬 1 篇入库，全站篇数 166 → 167',
       items: ['接入 2026-10-19 重爬数据中的新增篇《活动焦虑与精力困境》（同日第二篇；另两篇 10-17 / 10-19 库内已有，不重复入库）；正文按库内规范重排（标题 / 时间「编辑于」/ 日志ID / 原链接 / 【正文】/【评论】），正文原样搬运，含 2 条评论',
               '索引层同步：数据/日志全量索引.json 166 → 167（2026 年 65 → 66，评论 58 → 60）；数据/必读/03_数据地图.md §3 计数基线（升 1.6）、数据/阶段与时间轴重写说明.md（阶段 11：23 → 24；总计 167）、数据/AI问答与个人助手知识库分析.md（升 v2.6，含 §16 索引新条）同步',
@@ -1873,7 +1878,12 @@ const REVIEW = {
       watch: ['【参与 · 本周内】挑 1 个门槛最低的活动（黑客松 / Game Jam / 策划大赛皆可）**报名并出席一次**，目标不是名次，是「以不专业的身份到场」；验收：会后写 200 字「我实际卡在哪」，而不是「我够不够格」。',
               '【规模 · 每次启动前】任何新想法先用一句话钉住**最小可交付**（照 20 条成片那样「每条都小、可复用、有模板」）；验收：本周把《物魄奇谭》那类「宏大启动」复盘成一张「缩到能做完」的清单，写进日志。',
               '【精力 · 记账而非自责】把「精力」当成一种可记的东西（你 10-17 自己说过「精力也是一种东西」）：每天只记一件「最耗精力」的事，连记 7 天；验收：一周后能指出精力主要漏在哪，而不是笼统说「我精力差」。',
-              '【防倒退 · 提醒】本周若冒出「他们那活动没意思」的念头，把它当**信号而非结论**，回到你写的「不可以故步自封」——**先报名，再评估**。'] },
+              '【防倒退 · 提醒】本周若冒出「他们那活动没意思」的念头，把它当**信号而非结论**，回到你写的「不可以故步自封」——**先报名，再评估**。'],
+      carry: ['【职业】第二段实习谈定并签下 + 主动拒掉一个不符合职业架构句的机会（上条标「本周内」，尚无完成证据）',
+              '【产出】给 20 条成片建最小数据表（播放 / 完播 / 互动）',
+              '【消耗】把「太负责」写成硬边界：只对明确分派的模块负责，外包历史问题只记录、不接手',
+              '【身体】侧弯先拍片拿 Cobb 角，别用加训练量替代诊断',
+              '【现金】3600 / 36 天死线未松，显卡涨价期间别冲动接盘 DLSS5'] },
     { date: '2026-10-19',
       since: '本次更新：新增 2026-10-13《微恐Vibe短片剧本：认知偏差》、10-14《观念与「电子宠物」》、10-15《渲染队列与剧本节奏》、10-17《逃难与离职前的准备》、10-19《Vibe视频工作流与显卡涨价》5 篇，累计 {n} 篇；主线是 Vibe 视频线成片约 20 条、工作流趋稳，以及 10-17 与 NPD 学长切割（被拉黑）、准备 24/27 号离开第一家公司',
       verdict: '这 5 篇的底色是**有产出、也在收尾**。产出是真的：10-19 列出 20 条成片（巴纳姆效应一路到约拿情结），并写明**工作流已稍许稳定、可远程控制电脑产出**；10-13 把《认知偏差》写成 90 秒竖屏微恐剧本，六幕逐级递进（地下室→红毯发布会→城市高空→芯片城市→量子幽灵→虚无之眼），落点是那句「你以为的共识，可能只是系统预设的回音」。10-15 与 10-17 则把技术美术从「搬代码」推进到**讲清管线**：z-buffer 与 RT 的排序发生在光栅化阶段、自研 WebGL 管线（没用 three.js）写了冒烟测试来修管线、unity shader 里血条的百分比其实是**经一次变换的间接参数**（Properties 只是槽位）、ush 要放在工程外热编译后再交 Custom 节点。10-17 还落地了两件现实动作：与 PUA 自己的 NPD 学长切割（对方直接拉黑），并把插件与功能块迁到 GitHub 备投递。这些都是行动，不是空谈。\n\n但**这仍然不是「选哪条路」的判断**。迁移 UE5 是接续已有能力，离职是既定时间表，视频线是顺手的产出——三件事都在「把手上已有的做得更好」，没有一件是主动关掉某个选项。更能说明问题的是 10-17 那篇长文：一面承认「**精力也是一种东西、不该拿来绑架自己**」，一面又给自己打 55 分、反复论证「这算不算形式主义」。**你在用自我评判替代对方向的取舍**，这正是你 10-01 自己命名过的「用挑战回避判断」。同一篇里还有个更值得当真的模式：你总结出「就业以来在项目组里**太负责，总去给别人擦屁股**」——角色动画外包经三四代人、动捕格式从源头就错、连直接负责的领导也跑了。**这不是又一条「分析得挺透」的观察，而是你反复被消耗的入口**，得真当回事。10-14 提的「不让恶趣味影响别人」是难得的观念自觉，可惜停在「我几乎没有观念、很浅薄」，没落成一条具体约束；观念是靠一次次「当场拦住自己」长出来的，不是靠事后复盘。\n\n一条要分清的事：**产出多 ≠ 判断多**。你越擅长把一件事做深，越容易把「我在推进」误当「我在选择」。10-19 说「这个只是今天凑数写的」，可恰恰是那两行（成片清单、显卡涨价）比任何长篇都更像真实进度。\n\n风险面在收紧：预算约 3600 撑 36 天、24/27 号离开第一家公司、第二段实习仍未谈定、显卡涨价让 DLSS5 更难买。**这些是硬约束，不会因为你学习曲线变好看就让路**——它们只认你有没有在期限内做出选择。下面三条不是「注意一下」，是这周就能做、且能验收的动作。',
@@ -1951,6 +1961,13 @@ function renderRevLatest() {
   const txt = s => esc(fillLogNum(s));
   /* 重点标记：**…** → 高亮；其余照常转义，避免注入 */
   const fmt = s => esc(fillLogNum(s)).replace(/\*\*(.+?)\*\*/g, '<mark class="rv-hl">$1</mark>');
+  /* 一条评价的三个区块：正文（多段）/ 要盯的事 / 承接上条仍开的事 */
+  const verdictParas = e => String(e.verdict || '').split(/\n+/).filter(s => s.trim())
+    .map(p => `<p class="rev-latest-verdict">${fmt(p)}</p>`).join('');
+  const watchBlock = e => e.watch && e.watch.length ? `<div class="rev-watch">
+        <b>要盯的事 · 指引</b><ul>${e.watch.map(w => `<li>${fmt(w)}</li>`).join('')}</ul></div>` : '';
+  const carryBlock = e => e.carry && e.carry.length ? `<div class="rev-carry">
+        <b>承接上条 · 仍开（未收尾）</b><ul>${e.carry.map(w => `<li>${fmt(w)}</li>`).join('')}</ul></div>` : '';
   el.innerHTML = `
     <div class="card wide rev-latest rev-tilt">
       <div class="rev-latest-h">
@@ -1958,12 +1975,23 @@ function renderRevLatest() {
         <b>${txt(first.date)}</b>
         <span class="rev-latest-since">${txt(first.since)}</span>
       </div>
-      ${String(first.verdict).split(/\n+/).filter(s => s.trim()).map(p => `<p class="rev-latest-verdict">${fmt(p)}</p>`).join('')}
-      ${first.watch && first.watch.length ? `<div class="rev-watch">
-        <b>要盯的事 · 指引</b><ul>${first.watch.map(w => `<li>${fmt(w)}</li>`).join('')}</ul></div>` : ''}
+      ${verdictParas(first)}
+      ${watchBlock(first)}
+      ${carryBlock(first)}
     </div>
     ${rest.length ? `<div class="rev-latest-past">${rest.map(e => `
-      <div class="rev-latest-row"><b>${txt(e.date)}</b><span>${txt(e.since)}</span></div>`).join('')}</div>` : ''}`;
+      <div class="rev-past-row">
+        <div class="rev-latest-row"><b>${txt(e.date)}</b><span>${txt(e.since)}</span></div>
+        <div class="rev-past-body" hidden>${verdictParas(e)}${watchBlock(e)}${carryBlock(e)}</div>
+      </div>`).join('')}</div>` : ''}`;
+  /* 历史不丢：折叠成一行，点开看该次的完整判断与要盯的事 */
+  el.querySelectorAll('.rev-past-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const on = row.classList.toggle('on');
+      const body = row.querySelector('.rev-past-body');
+      if (body) body.hidden = !on;
+    });
+  });
   const card = el.querySelector('.rev-latest');
   if (card) bindTilt(card);
 }
