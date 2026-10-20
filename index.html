@@ -10,7 +10,7 @@
 <meta http-equiv="Expires" content="0">
 <title>历程 · LifeTrail</title>
 <meta name="lt-token" content="__LIFETRAIL_TOKEN__">
-<link rel="stylesheet" href="lifetrail-web/public/style.css?v=52">
+<link rel="stylesheet" href="lifetrail-web/public/style.css?v=53">
 </head>
 <body>
 <canvas class="sky-canvas" id="skyCanvas" aria-hidden="true"></canvas>
@@ -34,7 +34,7 @@
       <button data-p="updates">更新</button>
       <button data-p="chat">对话</button>
     </nav>
-    <div class="foot">v0.7 · 纯本地数据</div>
+    <div class="foot">v0.8 · 纯本地数据</div>
   </aside>
 
   <main class="main">
@@ -83,7 +83,7 @@
       <div class="card wide" data-glass id="yearDetail"></div>
 
       <h3 class="sec">全量分析 · 8 个转折点</h3>
-      <p class="sub" style="margin-bottom:12px">依据全部 <span data-lognum>166</span> 篇日志与 DLC 01–07 重排；红线＝结构性转折（有本人确认或硬事件），橙线＝过程性转折（以推断为主）。点任一条看该转折的时点、具体内容、原因与证据。</p>
+      <p class="sub" style="margin-bottom:12px">依据全部 <span data-lognum>168</span> 篇日志与 DLC 01–07 重排；红线＝结构性转折（有本人确认或硬事件），橙线＝过程性转折（以推断为主）。点任一条看该转折的时点、具体内容、原因与证据。</p>
       <div id="tpList" class="tp-list"></div>
 
       <h3 class="sec">逐条明细</h3>
@@ -127,7 +127,7 @@
 
       <div class="card wide" data-glass>
         <div class="k">发展阶段模型 · <span id="stageCount">11</span> 个可核验阶段</div>
-        <p class="sub" style="margin-top:6px">按 <span data-lognum>166</span> 篇原始日志与补回图片重新划分；每段列出关键证据、真正变化、尚未完成与解释边界。</p>
+        <p class="sub" style="margin-top:6px">按 <span data-lognum>168</span> 篇原始日志与补回图片重新划分；每段列出关键证据、真正变化、尚未完成与解释边界。</p>
         <div id="stageTheory" style="margin-top:12px"></div>
       </div>
 
@@ -260,7 +260,7 @@
 
     <section class="page" id="p-review">
       <h2 class="pt">评价</h2>
-      <p class="sub">一份不客气的体检报告 · 依据全部 <span data-lognum>166</span> 篇日志与 DLC 01–08 全量分析（AI 综合，非自评）</p>
+      <p class="sub">一份不客气的体检报告 · 依据全部 <span data-lognum>168</span> 篇日志与 DLC 01–08 全量分析（AI 综合，非自评）</p>
 
       <h3 class="sec">最新评价 · 随日志更新</h3>
       <div id="revLatest"></div>
@@ -418,8 +418,168 @@
   </div>
 </div>
 
+<!-- 静态展示锁（仅 GitHub Pages 入口有；本地 server.js 不注入这段）
+     说明：这里没有真实密码，「进入」永远校验失败；唯一解除方式是向左滑动（鼠标拖拽同样生效）。
+     解锁状态记在 sessionStorage，同一标签页内刷新不再重复上锁。 -->
+<style>
+  html.lt-locked, html.lt-locked body{overflow:hidden!important}
+  .lt-lock{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+    padding:24px;user-select:none;touch-action:none;color:#F5F5F7;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    background:
+      radial-gradient(120% 90% at 50% -10%,rgba(216,180,122,.12),transparent 55%),
+      radial-gradient(90% 80% at 82% 105%,rgba(143,163,191,.14),transparent 60%),
+      #07070A;
+    transition:opacity .55s ease,visibility .55s}
+  .lt-lock.off{opacity:0;visibility:hidden;pointer-events:none}
+  .lt-lock-card{width:min(408px,calc(100vw - 40px));padding:30px 28px 26px;border-radius:20px;
+    background:rgba(32,34,40,.74);border:1px solid rgba(255,255,255,.10);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 24px 60px rgba(0,0,0,.55);
+    backdrop-filter:blur(24px) saturate(1.25);-webkit-backdrop-filter:blur(24px) saturate(1.25);
+    transition:transform .28s cubic-bezier(.2,.8,.2,1);will-change:transform}
+  .lt-lock-card.shake{animation:ltShake .42s cubic-bezier(.36,.07,.19,.97)}
+  @keyframes ltShake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}
+    30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+  .lt-lock-badge{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    background:rgba(216,180,122,.14);border:1px solid rgba(216,180,122,.34);margin-bottom:18px}
+  .lt-lock-badge svg{width:20px;height:20px;display:block}
+  .lt-lock h3{margin:0;font-size:17px;font-weight:600;letter-spacing:.4px}
+  .lt-lock-sub{margin:6px 0 0;font-size:11.5px;line-height:1.7;color:rgba(245,245,247,.45)}
+  .lt-lock-field{display:flex;gap:8px;margin-top:20px}
+  .lt-lock-field input{flex:1;min-width:0;height:40px;padding:0 12px;border-radius:10px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+    color:#F5F5F7;font-size:13px;outline:none;transition:border-color .2s,background .2s}
+  .lt-lock-field input:focus{border-color:rgba(216,180,122,.55);background:rgba(255,255,255,.07)}
+  .lt-lock-field input::placeholder{color:rgba(245,245,247,.3)}
+  .lt-lock-btn{height:40px;padding:0 16px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.06);color:#F5F5F7;font-size:12.5px;cursor:pointer;
+    transition:background .2s,border-color .2s,transform .1s}
+  .lt-lock-btn:hover{background:rgba(255,255,255,.11)}
+  .lt-lock-btn:active{transform:translateY(1px)}
+  .lt-lock-btn.primary{background:#D8B47A;border-color:#D8B47A;color:#0E0E12;font-weight:600}
+  .lt-lock-btn.primary:hover{background:#E2C087}
+  .lt-lock-err{min-height:17px;margin:10px 0 0;font-size:11.5px;color:#E5484D;line-height:1.5}
+  .lt-lock-hint{margin:2px 0 0;font-size:10.5px;color:rgba(245,245,247,.32);line-height:1.6}
+  .lt-lock-again{display:none;margin-top:16px;background:none;border:0;padding:0;cursor:pointer;
+    font-size:11.5px;color:rgba(216,180,122,.9);font-family:inherit}
+  .lt-lock-again:hover{text-decoration:underline}
+  .lt-lock.compact .lt-lock-field,.lt-lock.compact .lt-lock-err{display:none}
+  .lt-lock.compact .lt-lock-again{display:inline-block}
+  .lt-lock.compact .lt-lock-sub{color:rgba(245,245,247,.6)}
+</style>
+<div class="lt-lock" id="ltLock" role="dialog" aria-modal="true" aria-label="入口锁">
+  <div class="lt-lock-card" id="ltLockCard">
+    <div class="lt-lock-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#D8B47A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4.5" y="10.5" width="15" height="9.5" rx="2.4"/>
+        <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>
+        <circle cx="12" cy="15.2" r="1.1" fill="#D8B47A" stroke="none"/>
+      </svg>
+    </div>
+    <h3>历程 · LIFETRAIL</h3>
+    <p class="lt-lock-sub" id="ltLockTip">这是一个私人站点。请输入密码后进入。</p>
+    <div class="lt-lock-field">
+      <input id="ltLockInput" type="password" placeholder="请输入密码" autocomplete="off" spellcheck="false">
+      <button class="lt-lock-btn primary" id="ltLockEnter" type="button">进入</button>
+      <button class="lt-lock-btn" id="ltLockCancel" type="button">取消</button>
+    </div>
+    <p class="lt-lock-err" id="ltLockErr"></p>
+    <p class="lt-lock-hint">密码仅用于本地校验，不会上传。</p>
+    <button class="lt-lock-again" id="ltLockAgain" type="button">重新输入密码</button>
+  </div>
+</div>
+<script>
+(function () {
+  var lock = document.getElementById('ltLock');
+  if (!lock) return;
+  var KEY = 'lt-unlocked';
+  var html = document.documentElement;
+
+  function unlock(instant) {
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    html.classList.remove('lt-locked');
+    if (instant) { lock.remove(); return; }
+    lock.classList.add('off');
+    setTimeout(function () { if (lock.parentNode) lock.remove(); }, 600);
+  }
+
+  var remember = false;
+  try { remember = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+  if (remember) { unlock(true); return; }
+
+  html.classList.add('lt-locked');
+  var card = document.getElementById('ltLockCard');
+  var input = document.getElementById('ltLockInput');
+  var err = document.getElementById('ltLockErr');
+  var tip = document.getElementById('ltLockTip');
+  var again = document.getElementById('ltLockAgain');
+  var tries = 0;
+
+  function shake() {
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+  }
+  function enter() {
+    if (!input.value) { err.textContent = '请输入密码'; shake(); input.focus(); return; }
+    err.textContent = '校验中…';
+    setTimeout(function () {
+      tries++;
+      input.value = '';
+      err.textContent = '密码错误' + (tries >= 2 ? ' · 试试按住卡片向左拖动' : '，请重试');
+      shake();
+      input.focus();
+    }, 420);
+  }
+  function cancel() {
+    lock.classList.add('compact');
+    tip.textContent = '已锁定 · 按住卡片向左拖动即可解除';
+    err.textContent = '';
+  }
+
+  document.getElementById('ltLockEnter').addEventListener('click', enter);
+  document.getElementById('ltLockCancel').addEventListener('click', cancel);
+  again.addEventListener('click', function () {
+    lock.classList.remove('compact');
+    tip.textContent = '这是一个私人站点。请输入密码后进入。';
+    input.focus();
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); enter(); }
+    if (e.key === 'Escape') cancel();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lock.parentNode && lock.classList.contains('compact')) { /* 已收起 */ }
+  });
+
+  /* 左滑解锁：指针事件同时覆盖鼠标拖拽与触屏滑动；从输入框 / 按钮上起手不算 */
+  var sx = 0, dx = 0, dragging = false;
+  lock.addEventListener('pointerdown', function (e) {
+    if (/^(INPUT|BUTTON)$/.test(e.target.tagName)) return;
+    dragging = true; sx = e.clientX; dx = 0;
+    card.style.transition = 'none';
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    dx = e.clientX - sx;
+    var x = dx < 0 ? Math.max(dx * 0.34, -130) : Math.min(dx * 0.12, 26);
+    card.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
+  });
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    card.style.transition = '';
+    if (dx <= -80) { unlock(); return; }
+    card.style.transform = '';
+    if (dx <= -24) { tip.textContent = '再往左滑一点就能解除'; }
+  }
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', endDrag);
+})();
+</script>
+
 <script src="lifetrail-web/public/glass.js?v=9"></script>
 <script src="lifetrail-web/public/sky.js?v=3"></script>
-<script src="lifetrail-web/public/app.js?v=81"></script>
+<script src="lifetrail-web/public/app.js?v=82"></script>
 </body>
 </html>
