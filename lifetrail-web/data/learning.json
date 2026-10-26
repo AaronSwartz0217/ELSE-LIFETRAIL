@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-22",
+  "updated_at": "2026-10-26",
   "intro": "把正在推进的学习方向做成路线图，随日志刷新 —— 每条 = 目标 / 步骤与状态 / 坑 / 依据 / 下一步。追加新路线：往 tracks 末尾加一条，并在 data/learning/ 下补同名 md。",
   "tracks": [
     { "id": "ta", "name": "技术美术（TA）迁移", "state": "doing", "file": "ta迁移.md", "order": 1 },
