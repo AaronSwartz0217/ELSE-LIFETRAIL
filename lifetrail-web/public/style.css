@@ -620,6 +620,16 @@ select{background:var(--w-06);border:1px solid var(--line);
 .rev-watch li{font-size:12px;color:var(--t2);line-height:1.8;padding-left:13px;position:relative}
 .rev-watch li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;
   border-radius:50%;background:rgba(var(--c-gold-rgb),.6)}
+/* 总结与答疑：每批评价的结论区与问答区 */
+.rev-sum{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.rev-sum b{display:block;font-size:10.5px;color:var(--c-gold);letter-spacing:.7px;margin-bottom:8px}
+.rev-sum p{font-size:12.5px;color:var(--t2);line-height:1.9}
+.rev-qa{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.rev-qa b{display:block;font-size:10.5px;color:var(--t3);letter-spacing:.7px;margin-bottom:10px}
+.rev-qa-item{margin-bottom:11px}
+.rev-qa-q{font-size:12px;color:var(--t1);line-height:1.75;margin-bottom:4px}
+.rev-qa-a{font-size:12px;color:var(--t2);line-height:1.85}
+.rev-past-body .rev-sum,.rev-past-body .rev-qa{margin-top:10px}
 .rev-latest-past{margin-top:6px;border:1px solid var(--line);border-radius:14px;
   background:var(--glass);padding:4px 16px}
 .rev-latest-row{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
